@@ -1,0 +1,149 @@
+name: BaturPlugin
+author: batur123
+version: 1.0
+api-version: 1.13
+main: AnaDizinDosyasi.BaturPlugin
+description: denemebatuhan
+
+
+commands:
+  bandaj:
+    description: asd
+    usage: /<command> <amount>
+
+
+  me:
+    description: ME Emote komutu
+    usage: /<command> <message>
+
+
+  duyuru:
+    description: Duyuru Komutu (Sadece Adminler)
+    usage: /<command> <message>
+
+
+  karakter:
+    description: Karakter kagidi gosterme komutu
+    usage: /<command>
+
+  do:
+    description: DO Emote Komutu
+    usage: /<command> <message>
+
+  ba:
+    description: Bagirma Komutu
+    usage: /<command> <message>
+
+  f:
+    description: Fisildama Komutu
+    usage: /<command> <message>
+
+  zar:
+    description: Zar Komutu
+    usage: /<command> <message>
+
+  maske:
+    description: Maske Takma/Cikarma
+    usage: /<command> <message>
+
+  meslekseviye:
+    description: Mesleklerin Seviyelerini Ogrenme
+    usage: /<command> <message>
+
+  a:
+    description: Admin Chat
+    usage: /<command> <message>
+
+  b:
+    description: OOC Konusmak
+    usage: /<command> <message>
+
+  ooc:
+    description: OOC Konusmak
+    usage: /<command> <message>
+
+  silah:
+    description: Elinde Tuttugun Silahin Zarini Atma Komutu
+    usage: /<command>
+
+  ck:
+    description: CK Etme Komutu
+    usage: /<command> <kisi>
+
+  kf:
+    description: Kulaga Fisildama
+    usage: /<command> <kisi> <msj>
+
+  w:
+    description: Kulaga Fisildama
+    usage: /<command> <kisi> <msj>
+
+  kk:
+    description: Kendi Kendine Mirildanma
+    usage: /<command> <msj>
+
+  isimver:
+    description: Iteme Isim Verme
+    usage: /<command> <isim>
+
+  lorever:
+    description: Iteme Lore Verme
+    usage: /<command> <lore>
+
+  tur:
+    description: Savas Icin Tura Girme
+    usage: /<command>
+
+  martinkafaat:
+    description: O His ki Martin Kafa Atttiginda
+    usage: /<command>
+
+  saldir:
+    description: Saldirma Komutu
+    usage: /<command> <kisi>
+
+  hasar:
+    description: Kisiye Hasar Verme
+    usage: /<command> <kisi> <hasar>
+
+  kaydet:
+    description: Gorunusunuzu Kaydetme
+    usage: /<command> <gorunus>
+
+  tamir:
+    description: Esyayi Tamir Etme En Az 3 Seviye Demirci Yapabilir
+    usage: /<command>
+
+  isimayarla:
+    description: Isim Ayarlama Kodu
+    usage: /<command>
+
+  yardim:
+    description: Yoneticilerden Yardim Isteme
+    usage: /<command>
+
+  mesaj:
+    description: Ozel Mesaj Gonderme
+    usage: /<command> <user> <mesaj>
+
+  yuru:
+    description: Yurume Komutu
+    usage: /<command> <user> <mesaj>
+
+  meslek:
+    description: Meslek Secme
+    usage: /<command> <meslekad>
+
+  sifa:
+    description: Sifaci
+    usage: /<command> <isim>
+
+  mesleksifirla:
+    description: Meslek Sifirlama
+    usage: /<command> <isim>
+
+  baslangic:
+    description: Baslangic Esyasi Verme
+    usage: /<command> <isim>
+
+
