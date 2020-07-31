@@ -1,6 +1,7 @@
 package EventDosyasi;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Objects;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -43,38 +46,26 @@ import Komutlar.KomutListesi;
 public class EventsClass implements Listener {
 
 
-    public Boolean GirdiKontrol;
-    public String meslek;
-
     public String url = "jdbc:mysql://localhost:3306/karakter?autoReconnect=true&useSSL=true";
     public String user = "root";
     public String pass = "test";
 
-    public int oyuncuid;
     public int BasvuruDurum;
     public String ForumAdi;
     public String OyunAdi;
     public String KarakterAdi;
     public String Sifre;
     public String Yas;
-    public String Gorunus;
     public int StatTemp;
 
     public String Meslek;
     public int MeslekXP;
     public int MeslekSV;
-    public String Sinif;
 
-    public String MadenciXP, OduncuXP, DemirciXP;
+    public String MadenciXP1, MadenciSeviye1;
 
-    public int HP, AC;
-
-    public String MadenciSV, OduncuSV, DemirciSV;
-    public String CiftciXP, CiftciSV;
-    public String OduncuXP1, MadenciXP1, OduncuSeviye1, MadenciSeviye1;
-
-    public String oyuncumadencixp, oyuncudemircixp, oyuncuavcixp, oyuncuoduncuxp, oyuncuciftcixp;
-    public String oyuncumadencisv, oyuncudemircisv, oyuncuavcisv, oyuncuoduncusv, oyuncuciftcisv;
+    public String oyuncumadencixp, oyuncudemircixp, oyuncuavcixp, oyuncuoduncuxp;
+    public String oyuncumadencisv, oyuncudemircisv, oyuncuavcisv, oyuncuoduncusv;
 
     public int guc;
     public int bilgelik;
@@ -82,26 +73,8 @@ public class EventsClass implements Listener {
     public int buyu;
     public int dayaniklilik;
     public int karizma;
-    public String OnlineDurum;
-
     public String Irk;
-
-    public String YetkiSeviyesi;
-
-    public int hak = 3;
-    public String Sifre1;
-    public int ABC;
     public String CK_Durum;
-
-    public String ayar1, ayar2, ayar3, ayar4, ayar5, ayar6, ayar7;
-    public int sayar1, sayar2, sayar3, sayar4, sayar5, sayar6, sayar7;
-    public float fayar1, fayar2, fayar3, fayar4, fayar5, fayar6, fayar7;
-    public boolean test1, test2, test3;
-
-    public static String kisiadmaske;
-
-    // ***************************************** Deï¿½iï¿½kenler
-    // ************************************************
 
     @EventHandler
     public void onMove(PlayerMoveEvent e)
@@ -110,7 +83,7 @@ public class EventsClass implements Listener {
         {
             Player p = e.getPlayer();
 
-            if (getKontrol(p.getPlayer().getName()).equals("hayir"))
+            if (getKontrol(Objects.requireNonNull(p.getPlayer()).getName()).equals("hayir"))
             {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 999999999, 999999999));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 99999999, 999999999));
@@ -153,7 +126,7 @@ public class EventsClass implements Listener {
         {
             Player player = event1.getPlayer();
             Entity entity = event1.getRightClicked();
-            if (entity instanceof Player == true) {
+            if (entity instanceof Player) {
 
                 if (event1.getHand() == EquipmentSlot.HAND)
                 {
@@ -249,18 +222,17 @@ public class EventsClass implements Listener {
     @EventHandler
     public void CanYenilenmesiKapatma(EntityRegainHealthEvent e) {
 
-        try { if(!(e.getEntity() instanceof Player))
-        { return;
-        } else
+        try
         {
-            Player p = (Player) e.getEntity();
-            if(getKontrol(p.getPlayer().getName()).equals("hayir"))
+            if(e.getEntity() instanceof Player)
             {
+                Player p = (Player) e.getEntity();
+                if(getKontrol(Objects.requireNonNull(p.getPlayer()).getName()).equals("hayir"))
+                {
+                    e.setCancelled(true);
+                }
                 e.setCancelled(true);
             }
-
-            e.setCancelled(true);
-        }
 
 
         } catch(Exception ex) {
@@ -270,17 +242,6 @@ public class EventsClass implements Listener {
 
     }
 
-    /*
-     * @EventHandler public void Kitap(PlayerEditBookEvent e) { Player p =
-     * e.getPlayer();
-     *
-     * BookMeta OldMeta = e.getNewBookMeta(); BookMeta NewMeta =
-     * e.getPreviousBookMeta();
-     *
-     * if(OldMeta != NewMeta) {
-     *
-     * } }
-     */
 
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
@@ -341,14 +302,6 @@ public class EventsClass implements Listener {
     public void OtArastirmaSistemi(BlockBreakEvent e)
     {
 
-        try
-        {
-
-        }
-        catch(Exception ex)
-        {
-
-        }
         Player p = e.getPlayer();
 
         if (getKontrol(p.getPlayer().getName()).equals("hayir"))
@@ -423,8 +376,6 @@ public class EventsClass implements Listener {
     {
         try
         {
-
-            Player p = (Player) e.getCaught();
             if(e.getCaught().getType() != null)
             {
                 e.setCancelled(true);
@@ -441,7 +392,7 @@ public class EventsClass implements Listener {
 
     @SuppressWarnings("deprecation")
     @EventHandler
-    public void Madencilik(BlockBreakEvent e) {
+    public void Madencilik(BlockBreakEvent e) throws IOException {
 
         Player p = e.getPlayer();
         if (getKontrol(p.getPlayer().getName()).equals("hayir"))
@@ -452,12 +403,7 @@ public class EventsClass implements Listener {
         {
 
 
-            if(p.isOp())
-            {
-
-
-            }
-            else
+            if(!p.isOp())
             {
                 MadenciXP1 = getMeslekXP(e.getPlayer().getName());
                 MadenciSeviye1 = getMeslekSeviye(e.getPlayer().getName());
@@ -479,7 +425,11 @@ public class EventsClass implements Listener {
                             // Block Kï¿½rdï¿½kï¿½a Madenci XP'yi arttï¿½rma
                             Temp = Integer.valueOf(MadenciXP1);
                             Temp = Temp + 1;
-                            setMeslekXP(e.getPlayer().getName(), Temp);
+                            try {
+                                setMeslekXP(e.getPlayer().getName(), Temp);
+                            } catch (IOException ioException) {
+                                ioException.printStackTrace();
+                            }
                         }
                         else
                         {
@@ -770,7 +720,11 @@ public class EventsClass implements Listener {
                             // Block Kï¿½rdï¿½kï¿½a Madenci XP'yi arttï¿½rma
                             Temp = Integer.valueOf(MadenciXP1);
                             Temp = Temp + 1;
-                            setMeslekXP(e.getPlayer().getName(), Temp);
+                            try {
+                                setMeslekXP(e.getPlayer().getName(), Temp);
+                            } catch (IOException ioException) {
+                                ioException.printStackTrace();
+                            }
                         }
 
 
@@ -1018,32 +972,41 @@ public class EventsClass implements Listener {
                             // Block Kï¿½rdï¿½kï¿½a Madenci XP'yi arttï¿½rma
                             Temp = Integer.valueOf(MadenciXP1);
                             Temp = Temp + 1;
-                            setMeslekXP(e.getPlayer().getName(), Temp);
+                            try {
+                                setMeslekXP(e.getPlayer().getName(), Temp);
+                            } catch (IOException ioException) {
+                                ioException.printStackTrace();
+                            }
                         }
 
 
                         // Block Kï¿½rdï¿½kï¿½a Madenci XP'yi arttï¿½rma
 
-                        if (getMeslekXP(e.getPlayer().getName()).equals("3200")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Tebrikler! Damarlarï¿½nda akan o maden coï¿½kusunu hissedebiliyorsun. " + ChatColor.GREEN
-                                    + "(2.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 2);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("9600")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Tebrikler! Kazdï¿½ï¿½ï¿½n madenlerin seni daha fazla gï¿½ï¿½lï¿½ yaptï¿½ï¿½ï¿½nï¿½ hissetmeye baï¿½ladï¿½n. "
-                                    + ChatColor.BLUE + "(3.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 3);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("19200")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Etrafï¿½nda garip sesler duymaya baï¿½lï¿½yorsun. Hangi taï¿½ta hangi maden olduï¿½unu gï¿½rebilecek kadar gï¿½ï¿½lendin. "
-                                    + ChatColor.YELLOW + "(4.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 4);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("32000")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Karanlï¿½ï¿½ï¿½n gï¿½cï¿½ iï¿½ine doï¿½ru ï¿½ekiliyor. Artï¿½k o kadar ï¿½ok maden iï¿½inde ustalaï¿½tï¿½n ki karanlï¿½kta ï¿½nï¿½nï¿½ gï¿½rebiliyorsun! "
-                                    + ChatColor.LIGHT_PURPLE + "(Efsanevi Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 5);
+                        switch (getMeslekXP(e.getPlayer().getName())) {
+                            case "3200":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Tebrikler! Damarlarï¿½nda akan o maden coï¿½kusunu hissedebiliyorsun. " + ChatColor.GREEN
+                                        + "(2.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 2);
+                                break;
+                            case "9600":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Tebrikler! Kazdï¿½ï¿½ï¿½n madenlerin seni daha fazla gï¿½ï¿½lï¿½ yaptï¿½ï¿½ï¿½nï¿½ hissetmeye baï¿½ladï¿½n. "
+                                        + ChatColor.BLUE + "(3.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 3);
+                                break;
+                            case "19200":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Etrafï¿½nda garip sesler duymaya baï¿½lï¿½yorsun. Hangi taï¿½ta hangi maden olduï¿½unu gï¿½rebilecek kadar gï¿½ï¿½lendin. "
+                                        + ChatColor.YELLOW + "(4.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 4);
+                                break;
+                            case "32000":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Karanlï¿½ï¿½ï¿½n gï¿½cï¿½ iï¿½ine doï¿½ru ï¿½ekiliyor. Artï¿½k o kadar ï¿½ok maden iï¿½inde ustalaï¿½tï¿½n ki karanlï¿½kta ï¿½nï¿½nï¿½ gï¿½rebiliyorsun! "
+                                        + ChatColor.LIGHT_PURPLE + "(Efsanevi Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 5);
+                                break;
                         }
 
                     }
@@ -1201,16 +1164,12 @@ public class EventsClass implements Listener {
                             || e.getBlock().getType() == Material.REDSTONE_ORE || e.getBlock().getType() == Material.GRANITE
                             || e.getBlock().getType() == Material.ANDESITE || e.getBlock().getType() == Material.DIORITE) {
 
-                        if(EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Madenci"))
-                        {
-
-                        }
-                        else
+                        if(!EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Madenci"))
                         {
                             e.setCancelled(true);
                             p.sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.YELLOW+"Mesleğiniz madenci değil!");
-
                         }
+
 
                         if (p.getInventory().getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)
                                 || p.getInventory().getItemInHand().getType().equals(Material.GOLDEN_PICKAXE)
@@ -1263,29 +1222,31 @@ public class EventsClass implements Listener {
                             setMeslekXP(e.getPlayer().getName(), Temp);
                         }
 
-
-                        // Block Kï¿½rdï¿½kï¿½a Madenci XP'yi arttï¿½rma
-
-                        if (getMeslekXP(e.getPlayer().getName()).equals("3200")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Tebrikler! Damarlarï¿½nda akan o maden coï¿½kusunu hissedebiliyorsun. " + ChatColor.GREEN
-                                    + "(2.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 2);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("9600")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Tebrikler! Kazdï¿½ï¿½ï¿½n madenlerin seni daha fazla gï¿½ï¿½lï¿½ yaptï¿½ï¿½ï¿½nï¿½ hissetmeye baï¿½ladï¿½n. "
-                                    + ChatColor.BLUE + "(3.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 3);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("19200")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Etrafï¿½nda garip sesler duymaya baï¿½lï¿½yorsun. Hangi taï¿½ta hangi maden olduï¿½unu gï¿½rebilecek kadar gï¿½ï¿½lendin. "
-                                    + ChatColor.YELLOW + "(4.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 4);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("32000")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Karanlï¿½ï¿½ï¿½n gï¿½cï¿½ iï¿½ine doï¿½ru ï¿½ekiliyor. Artï¿½k o kadar ï¿½ok maden iï¿½inde ustalaï¿½tï¿½n ki karanlï¿½kta ï¿½nï¿½nï¿½ gï¿½rebiliyorsun! "
-                                    + ChatColor.LIGHT_PURPLE + "(Efsanevi Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 5);
+                        switch (getMeslekXP(e.getPlayer().getName())) {
+                            case "3200":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Tebrikler! Damarlarï¿½nda akan o maden coï¿½kusunu hissedebiliyorsun. " + ChatColor.GREEN
+                                        + "(2.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 2);
+                                break;
+                            case "9600":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Tebrikler! Kazdï¿½ï¿½ï¿½n madenlerin seni daha fazla gï¿½ï¿½lï¿½ yaptï¿½ï¿½ï¿½nï¿½ hissetmeye baï¿½ladï¿½n. "
+                                        + ChatColor.BLUE + "(3.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 3);
+                                break;
+                            case "19200":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Etrafï¿½nda garip sesler duymaya baï¿½lï¿½yorsun. Hangi taï¿½ta hangi maden olduï¿½unu gï¿½rebilecek kadar gï¿½ï¿½lendin. "
+                                        + ChatColor.YELLOW + "(4.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 4);
+                                break;
+                            case "32000":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Karanlï¿½ï¿½ï¿½n gï¿½cï¿½ iï¿½ine doï¿½ru ï¿½ekiliyor. Artï¿½k o kadar ï¿½ok maden iï¿½inde ustalaï¿½tï¿½n ki karanlï¿½kta ï¿½nï¿½nï¿½ gï¿½rebiliyorsun! "
+                                        + ChatColor.LIGHT_PURPLE + "(Efsanevi Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 5);
+                                break;
                         }
 
                     }
@@ -1298,16 +1259,12 @@ public class EventsClass implements Listener {
                             || e.getBlock().getType() == Material.REDSTONE_ORE
 
                     ) {
-                        if(EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Madenci"))
-                        {
-
-                        }
-                        else
+                        if(!EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Madenci"))
                         {
                             e.setCancelled(true);
                             p.sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.YELLOW+"Mesleï¿½iniz madenci deï¿½il!");
-
                         }
+
                         double sans = Math.random();
 
                         if (e.getBlock().getType() == Material.COAL_ORE && sans >= 0 && sans <= 1) // coal
@@ -1371,16 +1328,12 @@ public class EventsClass implements Listener {
                     // Iron,Coal,Gold,Diamond,Redstone,Emerald,Lapis Oranlarï¿½ aï¿½aï¿½ï¿½da verildi.
                     if (e.getBlock().getType() == Material.STONE) {
 
-                        if(EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Madenci"))
-                        {
-
-                        }
-                        else
+                        if(!EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Madenci"))
                         {
                             e.setCancelled(true);
                             p.sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.YELLOW+"Mesleï¿½iniz madenci deï¿½il!");
-
                         }
+
                         double sans = Math.random();
 
                         if (sans >= 0.2 && sans <= 0.9) // coal
@@ -1458,16 +1411,12 @@ public class EventsClass implements Listener {
                             || e.getBlock().getType() == Material.REDSTONE_ORE || e.getBlock().getType() == Material.GRANITE
                             || e.getBlock().getType() == Material.ANDESITE || e.getBlock().getType() == Material.DIORITE) {
 
-                        if(EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Madenci"))
-                        {
-
-                        }
-                        else
+                        if(!EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Madenci"))
                         {
                             e.setCancelled(true);
-                            p.sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.YELLOW+"Mesleï¿½iniz madenci deï¿½il!");
-
+                            p.sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.YELLOW+"Mesleginiz madenci degil.");
                         }
+
 
                         if (p.getInventory().getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)
                                 || p.getInventory().getItemInHand().getType().equals(Material.GOLDEN_PICKAXE)
@@ -1521,26 +1470,31 @@ public class EventsClass implements Listener {
 
                         // Block Kï¿½rdï¿½kï¿½a Madenci XP'yi arttï¿½rma
 
-                        if (getMeslekXP(e.getPlayer().getName()).equals("3200")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Tebrikler! Damarlarï¿½nda akan o maden coï¿½kusunu hissedebiliyorsun. " + ChatColor.GREEN
-                                    + "(2.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 2);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("9600")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Tebrikler! Kazdï¿½ï¿½ï¿½n madenlerin seni daha fazla gï¿½ï¿½lï¿½ yaptï¿½ï¿½ï¿½nï¿½ hissetmeye baï¿½ladï¿½n. "
-                                    + ChatColor.BLUE + "(3.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 3);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("19200")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Etrafï¿½nda garip sesler duymaya baï¿½lï¿½yorsun. Hangi taï¿½ta hangi maden olduï¿½unu gï¿½rebilecek kadar gï¿½ï¿½lendin. "
-                                    + ChatColor.YELLOW + "(4.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 4);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("32000")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Karanlï¿½ï¿½ï¿½n gï¿½cï¿½ iï¿½ine doï¿½ru ï¿½ekiliyor. Artï¿½k o kadar ï¿½ok maden iï¿½inde ustalaï¿½tï¿½n ki karanlï¿½kta ï¿½nï¿½nï¿½ gï¿½rebiliyorsun! "
-                                    + ChatColor.LIGHT_PURPLE + "(Efsanevi Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 5);
+                        switch (getMeslekXP(e.getPlayer().getName())) {
+                            case "3200":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Tebrikler! Damarlarï¿½nda akan o maden coï¿½kusunu hissedebiliyorsun. " + ChatColor.GREEN
+                                        + "(2.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 2);
+                                break;
+                            case "9600":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Tebrikler! Kazdï¿½ï¿½ï¿½n madenlerin seni daha fazla gï¿½ï¿½lï¿½ yaptï¿½ï¿½ï¿½nï¿½ hissetmeye baï¿½ladï¿½n. "
+                                        + ChatColor.BLUE + "(3.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 3);
+                                break;
+                            case "19200":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Etrafï¿½nda garip sesler duymaya baï¿½lï¿½yorsun. Hangi taï¿½ta hangi maden olduï¿½unu gï¿½rebilecek kadar gï¿½ï¿½lendin. "
+                                        + ChatColor.YELLOW + "(4.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 4);
+                                break;
+                            case "32000":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Karanlï¿½ï¿½ï¿½n gï¿½cï¿½ iï¿½ine doï¿½ru ï¿½ekiliyor. Artï¿½k o kadar ï¿½ok maden iï¿½inde ustalaï¿½tï¿½n ki karanlï¿½kta ï¿½nï¿½nï¿½ gï¿½rebiliyorsun! "
+                                        + ChatColor.LIGHT_PURPLE + "(Efsanevi Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 5);
+                                break;
                         }
 
                     }
@@ -1553,16 +1507,12 @@ public class EventsClass implements Listener {
                             || e.getBlock().getType() == Material.REDSTONE_ORE
 
                     ) {
-                        if(EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Madenci"))
-                        {
-
-                        }
-                        else
+                        if(!EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Madenci"))
                         {
                             e.setCancelled(true);
                             p.sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.YELLOW+"Mesleï¿½iniz madenci deï¿½il!");
-
                         }
+
                         double sans = Math.random();
 
                         if (e.getBlock().getType() == Material.COAL_ORE && sans >= 0 && sans <= 1) // coal
@@ -1739,18 +1689,12 @@ public class EventsClass implements Listener {
             )
             {
 
-                if(EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Demirci"))
-                {
-                 //   StatTemp = 0;
-                 //   StatTemp = Integer.valueOf(EventDosyasi.EventsClass.getMeslekXP(p.getName()));
-                 //   StatTemp = StatTemp + 1;
-                 //   EventDosyasi.EventsClass.setMeslekXP(p.getName(),StatTemp);
-                }
-                else
+                if(!EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Demirci"))
                 {
                     e.setCancelled(true);
                     p.sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.YELLOW+"Mesleğiniz demirci değil!");
                 }
+
 
 
             }
@@ -1814,6 +1758,7 @@ public class EventsClass implements Listener {
                 {
                     StatTemp = 0;
                     StatTemp = Integer.valueOf(EventDosyasi.EventsClass.getMeslekXP(p.getName()));
+
                     StatTemp = StatTemp + 1;
                     EventDosyasi.EventsClass.setMeslekXP(p.getName(),StatTemp);
                 }
@@ -1917,7 +1862,7 @@ public class EventsClass implements Listener {
         try
         {
 
-            if (p.isSneaking() == false) {
+            if (!p.isSneaking()) {
                 e.setCancelled(true);
             }
         }
@@ -2397,9 +2342,9 @@ public class EventsClass implements Listener {
                             // Temel Zar Statlarï¿½
                             config.set("Kuvvet", guc);
                             config.set("Bilgelik", bilgelik);
-                            config.set("ï¿½eviklik", atiklik);
+                            config.set("Ceviklik", atiklik);
                             config.set("Zeka", buyu);
-                            config.set("Dayanï¿½klï¿½lï¿½k", dayaniklilik);
+                            config.set("Dayaniklilik", dayaniklilik);
                             config.set("Karizma", karizma);
                             // Temel Zar Statlarï¿½
 
@@ -2479,192 +2424,165 @@ public class EventsClass implements Listener {
     public static String getOyunNick(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Minecraft_Adi");
-        return className;
+        return pConfig.getString("Minecraft_Adi");
     }
 
-    public void setKontrol(String p, String kontroldurumu) {
+    public void setKontrol(String p, String kontroldurumu) throws IOException {
 
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("Girdi_Kontrol", kontroldurumu);
-        try {
-            pConfig.save(pFile);
-        } catch (Exception e) {
 
-        }
+            pConfig.save(pFile);
+
     }
 
     public static String getMeslekXP(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("MeslekXP");
-        return className;
+        return pConfig.getString("MeslekXP");
     }
 
-    public static void setMeslekXP(String p, int kontroldurumu) {
+    public static void setMeslekXP(String p, int kontroldurumu) throws IOException {
 
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("MeslekXP", kontroldurumu);
-        try {
-            pConfig.save(pFile);
-        } catch (Exception e) {
 
-        }
+            pConfig.save(pFile);
+
     }
 
     public static String getMeslekSeviye(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("MeslekSV");
-        return className;
+        return pConfig.getString("MeslekSV");
     }
 
-    public static void setMeslekSeviye(String p, int kontroldurumu) {
+    public static void setMeslekSeviye(String p, int kontroldurumu) throws IOException {
 
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("MeslekSV", kontroldurumu);
-        try {
-            pConfig.save(pFile);
-        } catch (Exception e) {
 
-        }
+            pConfig.save(pFile);
+
     }
 
     public static String getYas(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Yas");
-        return className;
+        return pConfig.getString("Yas");
     }
 
     public static String getzarGuc(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Kuvvet");
-        return className;
+        return pConfig.getString("Kuvvet");
     }
 
     public static String getzarBilgelik(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Bilgelik");
-        return className;
+        return pConfig.getString("Bilgelik");
     }
 
     public static String getzarAtiklik(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("ï¿½eviklik");
-        return className;
+        return pConfig.getString("ï¿½eviklik");
     }
 
     public static String getzarBuyu(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Zeka");
-        return className;
+        return pConfig.getString("Zeka");
     }
 
     public static String getzarDayaniklilik(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Dayanï¿½klï¿½lï¿½k");
-        return className;
+        return pConfig.getString("Dayanï¿½klï¿½lï¿½k");
     }
 
     public static String getzarKarizma(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Karizma");
-        return className;
+        return pConfig.getString("Karizma");
     }
 
     public static String getGorunus(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Gorunus");
-        return className;
+        return pConfig.getString("Gorunus");
     }
 
-    public static void setGorunus(String p, String Gorunus){
+    public static void setGorunus(String p, String Gorunus) throws IOException {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("Gorunus", Gorunus);
-        try {
             pConfig.save(pFile);
-        } catch (Exception e) {
 
-        }
     }
 
 
-    public static void setCan(String p, String Can) {
+    public static void setCan(String p, String Can) throws IOException {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("Can", Can);
-        try {
-            pConfig.save(pFile);
-        } catch (Exception e) {
 
-        }
+            pConfig.save(pFile);
+
     }
 
 
     public static int getCan(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("Can");
-        return className;
+        return pConfig.getInt("Can");
     }
 
-    public static void setArmor(String p, String Can) {
+    public static void setArmor(String p, String Can) throws IOException {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("Can", Can);
-        try {
-            pConfig.save(pFile);
-        } catch (Exception e) {
 
-        }
+            pConfig.save(pFile);
+
     }
 
     public static int getArmor(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("Can");
-        return className;
+        return pConfig.getInt("Can");
     }
 
     public static String getAclik(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Gorunus");
-        return className;
+        return pConfig.getString("Gorunus");
     }
 
-    public static void setAclik(String p, String Aclik) {
+    public static void setAclik(String p, String Aclik) throws IOException {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("DemirciSv", Aclik);
-        try {
-            pConfig.save(pFile);
-        } catch (Exception e) {
 
-        }
+            pConfig.save(pFile);
+
     }
 
-    public static void setCK(String p, String CKmi) {
+    public static void setCK(String p, String CKmi) throws IOException {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("CK_Durum", CKmi);
+
         try {
             pConfig.save(pFile);
-        } catch (Exception e) {
-
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
 
     public static String getAclikKontrol(String p) {
@@ -2674,15 +2592,13 @@ public class EventsClass implements Listener {
         return className;
     }
 
-    public static void setAclikKontrol(String p, String AclikKontrol) {
+    public static void setAclikKontrol(String p, String AclikKontrol) throws IOException {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("AclikKontrolLimiti", AclikKontrol);
-        try {
-            pConfig.save(pFile);
-        } catch (Exception e) {
 
-        }
+            pConfig.save(pFile);
+
     }
 
     public void sendPacket(Player player, Object packet) {
@@ -2719,17 +2635,39 @@ public class EventsClass implements Listener {
         return className;
     }
 
+    /*
+     * public static String getCiftciXP(String p) { File pFile = new
+     * File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" +
+     * p.toLowerCase() + ".yml"); FileConfiguration pConfig =
+     * YamlConfiguration.loadConfiguration(pFile); String className =
+     * pConfig.getString("CiftciXP"); return className; }
+     *
+     * public static String getCiftciSV(String p) { File pFile = new
+     * File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" +
+     * p.toLowerCase() + ".yml"); FileConfiguration pConfig =
+     * YamlConfiguration.loadConfiguration(pFile); String className =
+     * pConfig.getString("CiftciSV"); return className; }
+     */
 
-    public void setYetkiSeviye(String p, String YetkiSeviyesi) {
+
+
+	/*public static String getMeslekXP(String p) {
+		File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
+		FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
+		String className = pConfig.getString("MadenciXP");
+		return className;
+	} */
+
+
+
+    public void setYetkiSeviye(String p, String YetkiSeviyesi) throws IOException {
 
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("YetkiSeviyesi", YetkiSeviyesi);
-        try {
-            pConfig.save(pFile);
-        } catch (Exception e) {
 
-        }
+            pConfig.save(pFile);
+
     }
 
     public static String getMeslek(String p) {
@@ -2740,16 +2678,14 @@ public class EventsClass implements Listener {
     }
 
 
-    public static void setMeslek(String p, String YetkiSeviyesi) {
+    public static void setMeslek(String p, String YetkiSeviyesi) throws IOException {
 
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("Meslek", YetkiSeviyesi);
-        try {
-            pConfig.save(pFile);
-        } catch (Exception e) {
 
-        }
+            pConfig.save(pFile);
+
     }
     // oduncu xp,sv set get tamam
     // avci xp sv set get tamam
@@ -2855,16 +2791,14 @@ public class EventsClass implements Listener {
         return className;
     }
 
-    public static void setMaskeDurum(String p, int MaskeDurum) {
+    public static void setMaskeDurum(String p, int MaskeDurum) throws IOException {
 
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("MaskeDurum", MaskeDurum);
-        try {
-            pConfig.save(pFile);
-        } catch (Exception e) {
 
-        }
+            pConfig.save(pFile);
+
     }
 
     public static int getAC(String p) {
@@ -2874,16 +2808,14 @@ public class EventsClass implements Listener {
         return className;
     }
 
-    public static void setAC(String p, int AC) {
+    public static void setAC(String p, int AC) throws IOException {
 
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("AC", AC);
-        try {
-            pConfig.save(pFile);
-        } catch (Exception e) {
 
-        }
+            pConfig.save(pFile);
+
     }
 
 }

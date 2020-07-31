@@ -1,11 +1,8 @@
 package Komutlar;
 
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
-
+import AnaDizinDosyasi.BaturPlugin;
+import EventDosyasi.EventsClass;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,48 +10,28 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import AnaDizinDosyasi.BaturPlugin;
-import EventDosyasi.EventsClass;
 import org.bukkit.potion.PotionEffectType;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class KomutListesi implements CommandExecutor {
 
-    public static String OyuncuAd;
+
     public static String MaskeAd;
-
-    public String url="jdbc:mysql://localhost:3306/karakter?autoReconnect=true&useSSL=true";
-    public String user="root";
-    public String pass="testack";
-
     public String Gereksinim="null";
-    public String Gereksinim2,Gereksinim3,Gereksinim4;
-    public String MadenciAd,DemirciAd,OduncuAd,CiftciAd;
 
-
-
-    public Player getPlayer(String name)
-    {
-        for(Player p : Bukkit.getOnlinePlayers())
-        {
-            if(p.getName().equalsIgnoreCase(name)) {
-                return p;
-
-            }
-        }
-        return null;
-    }
     @SuppressWarnings("deprecation")
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-
-        //String player = sender.getName();
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
+    {
 
 //=======================================================================================================================================================================================================================
 //      /DUYURU KOMUTU
@@ -77,9 +54,8 @@ public class KomutListesi implements CommandExecutor {
 
             StringBuilder s = new StringBuilder();
 
-            for (int i = 0; i < args.length; i++)
-            {
-                s.append(args[i] + " ");
+            for (String arg : args) {
+                s.append(arg + " ");
             }
 
             for (Player on : Bukkit.getOnlinePlayers())
@@ -106,9 +82,8 @@ public class KomutListesi implements CommandExecutor {
                 {
                     StringBuilder s = new StringBuilder();
 
-                    for (int i = 0; i < args.length; i++)
-                    {
-                        s.append(args[i] + " ");
+                    for (String arg : args) {
+                        s.append(arg + " ");
                     }
 
 
@@ -154,9 +129,8 @@ public class KomutListesi implements CommandExecutor {
             {
                 StringBuilder s = new StringBuilder();
 
-                for (int i = 0; i < args.length; i++)
-                {
-                    s.append(args[i] + " ");
+                for (String arg : args) {
+                    s.append(arg + " ");
                 }
 
                 sender.sendMessage(tl(ChatColor.LIGHT_PURPLE + "[Yardım Talebi]"+ChatColor.YELLOW+ sender.getName()+ ChatColor.WHITE +": "+ s.toString()));
@@ -194,12 +168,12 @@ public class KomutListesi implements CommandExecutor {
                 {
                     //retrieve the first argument as a player
                     Player target = Bukkit.getServer().getPlayer(args[0]);
-                    String sm = "";
+                    StringBuilder sm = new StringBuilder();
 
                     //combine the arguments the player typed
                     for (int i = 1; i < args.length; i++){
                         String arg = (args[i] + " ");
-                        sm = (sm + arg);
+                        sm.append(arg);
                     }
                     int blockDistance = 1;
                     int blockDistance2 = 10;
@@ -262,20 +236,15 @@ public class KomutListesi implements CommandExecutor {
                 Player p = (Player) sender;
                 if (args.length > 1)
                 {
-                    //retrieve the first argument as a player
-                    Player target = Bukkit.getServer().getPlayer(args[0]);
-                    String sm = "";
 
-                    //combine the arguments the player typed
+                    Player target = Bukkit.getServer().getPlayer(args[0]);
+                    StringBuilder sm = new StringBuilder();
+
                     for (int i = 1; i < args.length; i++){
                         String arg = (args[i] + " ");
-                        sm = (sm + arg);
+                        sm.append(arg);
                     }
-                    //   int blockDistance = 1;
-                    //    int blockDistance2 = 10;
 
-                    Location playerLocation = p.getPlayer().getLocation();
-                 //   p.sendMessage(ChatColor.YELLOW+"[Özel Mesaj] "+p.getName()+": "+ChatColor.WHITE+sm);
                     p.sendMessage(ChatColor.GOLD+"["+ChatColor.DARK_BLUE+"Sen"+ChatColor.GOLD+" -> "+ChatColor.BLUE+target.getName()+ChatColor.GOLD+"]: "+ChatColor.WHITE+sm);
 
                     for(Player on : Bukkit.getOnlinePlayers())
@@ -393,12 +362,11 @@ public class KomutListesi implements CommandExecutor {
 
                 StringBuilder s = new StringBuilder();
 
-                for (int i = 0; i < args.length; i++)
-                {
-                    s.append(args[i] + " ");
+                for (String arg : args) {
+                    s.append(arg + " ");
                 }
 
-                if(p.getInventory().getItemInHand() != null && p.getInventory().getItemInHand() != new ItemStack(Material.AIR))
+                if(p.getInventory().getItemInHand() != null && !p.getInventory().getItemInHand().equals(new ItemStack(Material.AIR)))
                 {
                     ItemStack item = p.getInventory().getItemInHand();
                     ItemMeta meta = item.getItemMeta();
@@ -445,7 +413,11 @@ public class KomutListesi implements CommandExecutor {
                 p.sendMessage(ChatColor.GOLD + "[Bilgi]"+ ChatColor.BLUE + "Maske taktınız.");
 
 
-                EventDosyasi.EventsClass.setMaskeDurum(p.getName(),1);
+                try {
+                    EventsClass.setMaskeDurum(p.getName(),1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 listname = "Maskeli Kişi";
                 p.setPlayerListName("Maskeli Kişi");
                 p.setDisplayName("Maskeli Kişi");
@@ -457,7 +429,11 @@ public class KomutListesi implements CommandExecutor {
             else if(EventDosyasi.EventsClass.getMaskeDurum(p.getName()) == 1)
             {
 
-                EventDosyasi.EventsClass.setMaskeDurum(p.getName(),0);
+                try {
+                    EventsClass.setMaskeDurum(p.getName(),0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 p.setDisplayName(listname);
                 p.setPlayerListName(listname);
                 p.setCustomName(listname);
@@ -481,12 +457,12 @@ public class KomutListesi implements CommandExecutor {
             {
                 //retrieve the first argument as a player
                 Player target = Bukkit.getServer().getPlayer(args[0]);
-                String sm = "";
+                StringBuilder sm = new StringBuilder();
 
                 //combine the arguments the player typed
                 for (int i = 1; i < args.length; i++){
                     String arg = (args[i] + " ");
-                    sm = (sm + arg);
+                    sm.append(arg);
                 }
                 int blockDistance = 1;
                 int blockDistance2 = 10;
@@ -549,9 +525,8 @@ public class KomutListesi implements CommandExecutor {
                 }
                 StringBuilder s = new StringBuilder();
 
-                for (int i = 0; i < args.length; i++)
-                {
-                    s.append(args[i] + " ");
+                for (String arg : args) {
+                    s.append(arg + " ");
                 }
                 String rawmessage = s.toString();
                 int blockDistance = 10;
@@ -590,9 +565,8 @@ public class KomutListesi implements CommandExecutor {
                 }
                 StringBuilder s = new StringBuilder();
 
-                for (int i = 0; i < args.length; i++)
-                {
-                    s.append(args[i] + " ");
+                for (String arg : args) {
+                    s.append(arg + " ");
                 }
 
                 String rawmessage = s.toString();
@@ -656,9 +630,8 @@ public class KomutListesi implements CommandExecutor {
                 }
                 StringBuilder s = new StringBuilder();
 
-                for (int i = 0; i < args.length; i++)
-                {
-                    s.append(args[i] + " ");
+                for (String arg : args) {
+                    s.append(arg + " ");
                 }
                 String rawmessage = s.toString();
                 int blockDistance = 10;
@@ -696,9 +669,8 @@ public class KomutListesi implements CommandExecutor {
                 }
                 StringBuilder s = new StringBuilder();
 
-                for (int i = 0; i < args.length; i++)
-                {
-                    s.append(args[i] + " ");
+                for (String arg : args) {
+                    s.append(arg + " ");
                 }
                 String rawmessage = s.toString();
                 int blockDistance = 10;
@@ -738,9 +710,8 @@ public class KomutListesi implements CommandExecutor {
                 {
                     StringBuilder s = new StringBuilder();
 
-                    for (int i = 0; i < args.length; i++)
-                    {
-                        s.append(args[i] + " ");
+                    for (String arg : args) {
+                        s.append(arg + " ");
                     }
 
                     //kuvvet,bilgelik,çeviklik,dayanıklılık,zeka,karizma
@@ -853,9 +824,8 @@ public class KomutListesi implements CommandExecutor {
                 }
                 StringBuilder s = new StringBuilder();
 
-                for (int i = 0; i < args.length; i++)
-                {
-                    s.append(args[i] + " ");
+                for (String arg : args) {
+                    s.append(arg + " ");
                 }
                 String rawmessage = s.toString();
                 int blockDistance = 10;
@@ -893,9 +863,8 @@ public class KomutListesi implements CommandExecutor {
                     }
 
                     StringBuilder s = new StringBuilder();
-                    for (int i = 0; i < args.length; i++)
-                    {
-                        s.append(args[i] + " ");
+                    for (String arg : args) {
+                        s.append(arg + " ");
                     }
 
 
@@ -1097,18 +1066,6 @@ public class KomutListesi implements CommandExecutor {
             {
                 sender.sendMessage(ChatColor.RED+"[Hata!]: "+ChatColor.YELLOW+"Martin olmadığın için bu komutu kullanamazsın.");
             }
-            try
-            {
-
-
-
-            }
-            catch (Exception cd)
-            {
-                System.out.println(cd);
-                cd.printStackTrace();
-
-            }
 
 
         }
@@ -1121,10 +1078,7 @@ public class KomutListesi implements CommandExecutor {
                 if(EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Demirci"))
                 {
                     String RenksizSilahAdi = ChatColor.stripColor(ChatColor.RESET+p.getInventory().getItemInMainHand().getItemMeta().getDisplayName());
-                    String RenkliSilahAdi = p.getInventory().getItemInMainHand().getItemMeta().getDisplayName();
-
                     String ConfigSilahAdi = CustomItemler.CustomItems.SilahAd(RenksizSilahAdi);
-
                     ItemStack stackInHand = p.getInventory().getItemInHand();
                     if
                     (
@@ -1164,22 +1118,9 @@ public class KomutListesi implements CommandExecutor {
                             return true;
                         }
 
-                        ItemStack itemstack = new ItemStack(Material.IRON_INGOT, 1);
-
-
                         for (ItemStack item : p.getInventory().getContents())
                         {
-                         /*     if(!(p.getInventory().contains(item)))
-                            {
 
-                                p.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.YELLOW+"Eşyayı tamir edebilmek için envanterinizde en az 1 adet demir bulunmalıdır. 2 tane veya 64 tane bulunursa tamir edilmeyecektir.");
-
-                            }
-                            else
-                            {
-                                p.getInventory().remove(new ItemStack(Material.IRON_INGOT, 1));
-                                p.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ ChatColor.YELLOW+"Eşyayı tamir ettiniz.");
-                            } */
                             if (item.getType() == Material.IRON_INGOT)
                             {
 
@@ -1239,13 +1180,13 @@ public class KomutListesi implements CommandExecutor {
             try
             {
                 Player target = Bukkit.getServer().getPlayer(args[0]);
-                String sm = "";
+                StringBuilder sm = new StringBuilder();
 
                 //combine the arguments the player typed
                 for (int i = 1; i < args.length; i++)
                 {
                     String arg = (args[i] + " ");
-                    sm = (sm + arg);
+                    sm.append(arg);
                 }
 
 
@@ -1260,16 +1201,13 @@ public class KomutListesi implements CommandExecutor {
 
                     ItemStack stackInHand = p.getInventory().getItemInHand();
 
-                    if(target.getLocation().distance(playerLocation) <= blockDistance)
-                    {
-
-
-                    }
-                    else
+                    if(target.getLocation().distance(playerLocation) >= blockDistance)
                     {
                         p.sendMessage(ChatColor.RED+"[Uyarı]: "+ChatColor.YELLOW+"İyileştirmek için oyuncuya yakın olmalısınız.");
                         return true;
+
                     }
+
 
                     int miktar = stackInHand.getAmount();
                     miktar = miktar - 1;
@@ -1285,7 +1223,7 @@ public class KomutListesi implements CommandExecutor {
                                 on.sendMessage(ChatColor.RED + KarakterAdi+ ", "+ChatColor.YELLOW+HedefAt+ChatColor.GREEN+" isimli kişiyi iyileştirdi.");
 
                             }
-                            if(on.getName().equals(target.getName().toString()))
+                            if(on.getName().equals(target.getName()))
                             {
 
                                 stackInHand.setAmount(miktar);
@@ -1435,28 +1373,28 @@ public class KomutListesi implements CommandExecutor {
                     {
 
                         Player target = Bukkit.getServer().getPlayer(args[0]);
-                        String sm = "";
+                        StringBuilder sm = new StringBuilder();
 
                         //combine the arguments the player typed
                         for (int i = 1; i < args.length; i++)
                         {
                             String arg = (args[i] + " ");
-                            sm = (sm + arg);
+                            sm.append(arg);
                         }
 
 
                         for(Player on : Bukkit.getOnlinePlayers())
                         {
 
-                            if(on.getName().equals(target.getName().toString()))
+                            if(on.getName().equals(target.getName()))
                             {
-                                target.setHealth(target.getHealth() - Double.valueOf(sm));
+                                target.setHealth(target.getHealth() - Double.valueOf(sm.toString()));
                             }
 
                         }
 
 
-                        sender.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.RED+target.getName() +ChatColor.YELLOW+"isimli oyuncuya "+ChatColor.RED+sm.toString()+ChatColor.YELLOW+ "hasar vurdunuz.");
+                        sender.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.RED+target.getName() +ChatColor.YELLOW+"isimli oyuncuya "+ChatColor.RED+ sm.toString() +ChatColor.YELLOW+ "hasar vurdunuz.");
 
 
                         //  Location targetLocation = target.getPlayer().getLocation();
@@ -1502,9 +1440,8 @@ public class KomutListesi implements CommandExecutor {
                     }
 
                     StringBuilder s = new StringBuilder();
-                    for (int i = 0; i < args.length; i++)
-                    {
-                        s.append(args[i] + " ");
+                    for (String arg : args) {
+                        s.append(arg + " ");
                     }
 
 
@@ -1554,9 +1491,8 @@ public class KomutListesi implements CommandExecutor {
                     }
 
                     StringBuilder s = new StringBuilder();
-                    for (int i = 0; i < args.length; i++)
-                    {
-                        s.append(args[i] + " ");
+                    for (String arg : args) {
+                        s.append(arg + " ");
                     }
 
 
@@ -1634,7 +1570,7 @@ public class KomutListesi implements CommandExecutor {
                         StringBuilder s = new StringBuilder();
                         for (int i = 1; i < args.length; i++)
                         {
-                            s.append(args[i] + " ");
+                            s.append(args[i]).append(" ");
                         }
 
 
@@ -1643,7 +1579,7 @@ public class KomutListesi implements CommandExecutor {
                         for(Player on : Bukkit.getOnlinePlayers())
                         {
 
-                            if(on.getName().equals(target.getName().toString()))
+                            if(on.getName().equals(target.getName()))
                             {
                                 EventDosyasi.EventsClass.setKarakterAd(target.getName(), s.toString());
                                 target.setPlayerListName(s.toString());
@@ -1711,9 +1647,8 @@ public class KomutListesi implements CommandExecutor {
 
                 ZarSonuc = ZarSonuc+1;
                 StringBuilder s = new StringBuilder();
-                for (int i = 0; i < args.length; i++)
-                {
-                    s.append(args[i] + "");
+                for (String arg : args) {
+                    s.append(arg);
                 }
 
                 int blockDistance = 10;
@@ -1722,14 +1657,14 @@ public class KomutListesi implements CommandExecutor {
                 Player player = Bukkit.getPlayer(s.toString());
                 int tempac = EventDosyasi.EventsClass.getAC(player.getName());
                 String tempad = EventDosyasi.EventsClass.getKarakterAd(player.getName());
-                String saldiriyazisi="null";
+                String saldiriyazisi;
 
                 int Zar20 = ThreadLocalRandom.current().nextInt(1,20);
 
                 File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + player.getName().toLowerCase() + ".yml");
                 FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
                 int className = pConfig.getInt(CustomItemler.CustomItems.SilahZari(RenksizSilahAdi));
-                className  = (Integer.valueOf(className - 10) / 2);
+                className  = ((className - 10) / 2);
 
 
                 Zar20 = Zar20+className;
@@ -1840,9 +1775,8 @@ public class KomutListesi implements CommandExecutor {
                 }
                 StringBuilder s = new StringBuilder();
 
-                for (int i = 0; i < args.length; i++)
-                {
-                    s.append(args[i] + " ");
+                for (String arg : args) {
+                    s.append(arg + " ");
                 }
                 String rawmessage = s.toString();
                 int blockDistance = 10;
@@ -1895,9 +1829,8 @@ public class KomutListesi implements CommandExecutor {
                 }
                 StringBuilder s = new StringBuilder();
 
-                for (int i = 0; i < args.length; i++)
-                {
-                    s.append(args[i] + " ");
+                for (String arg : args) {
+                    s.append(arg + " ");
                 }
                 String rawmessage = s.toString();
                 int blockDistance = 20;
@@ -1951,9 +1884,8 @@ public class KomutListesi implements CommandExecutor {
                 }
                 StringBuilder s = new StringBuilder();
 
-                for (int i = 0; i < args.length; i++)
-                {
-                    s.append(args[i] + " ");
+                for (String arg : args) {
+                    s.append(arg + " ");
                 }
                 String rawmessage = s.toString();
                 double blockDistance = 5.0;
@@ -2069,8 +2001,8 @@ public class KomutListesi implements CommandExecutor {
                 }
                 StringBuilder s = new StringBuilder();
 
-                for (int i = 0; i < args.length; i++) {
-                    s.append(args[i] + " ");
+                for (String arg : args) {
+                    s.append(arg + " ");
                 }
 
 
@@ -2154,7 +2086,7 @@ public class KomutListesi implements CommandExecutor {
                         }
 
                     }
-                    if (args[0].equalsIgnoreCase("bilgelik") || args[0].equalsIgnoreCase("bilgelik")) {
+                    if (args[0].equalsIgnoreCase("bilgelik") || args[0].equalsIgnoreCase("Bilgelik")) {
                         if (ab.getLocation().distance(playerLocation) <= blockDistance) {
                             if (bilgelik < 0) {
                                 ab.sendMessage(tl(ChatColor.GOLD +"("+ p.getName() +")"+ChatColor.YELLOW + karakterad + ChatColor.GREEN + " (Bilgelik)" + ChatColor.YELLOW + " attı: " + ChatColor.GREEN + bonuslubilgelikzar + "(" + bilgelik + ")" + ChatColor.YELLOW + " geldi."));
@@ -2220,19 +2152,15 @@ public class KomutListesi implements CommandExecutor {
                     sum = sum + ThreadLocalRandom.current().nextInt(1, n2);
                 }
 
-                int blockDistance2 = 10;
-                Location playerLocation2 = p.getPlayer().getLocation();
-
                 for (Player ab2 : Bukkit.getOnlinePlayers()) {
 
 
-                    if (splittentext.length == 2) {
+                    if (splittentext.length == 2)
+                    {
 
                         if (ab2.getLocation().distance(playerLocation) <= blockDistance) {
                             ab2.sendMessage(tl(ChatColor.GOLD +"("+ p.getName() +")"+ChatColor.GOLD + karakterad + ChatColor.YELLOW + " isimli oyuncu " + ChatColor.GREEN + n1 + ChatColor.YELLOW + " kez " + ChatColor.GREEN + n2 + ChatColor.YELLOW + " yüzlü bir zar attı ve " + ChatColor.GREEN + sum + ChatColor.YELLOW + " geldi."));
                         }
-                    } else {
-
                     }
                 }
             }
@@ -2256,86 +2184,77 @@ public class KomutListesi implements CommandExecutor {
 
                 if(MeslekAd.equals("Madenci"))
                 {
-                    if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("1"))
-                    {
-                        Gereksinim = "3200";
-                        MeslekAd = "Kömür Madencisi";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("2"))
-                    {
-                        Gereksinim = "9600";
-                        MeslekAd = "Usta Madenci";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("3"))
-                    {
-                        Gereksinim = "19200";
-                        MeslekAd = "Üstad Madenci";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("4"))
-                    {
-                        Gereksinim = "32000";
-                        MeslekAd = "Bilge Madenci";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("5"))
-                    {
-                        Gereksinim = "Son Seviye";
-                        MeslekAd = "Efsanevi Madenci";
+                    switch (EventsClass.getMeslekSeviye(p.getPlayer().getName())) {
+                        case "1":
+                            Gereksinim = "3200";
+                            MeslekAd = "Kömür Madencisi";
+                            break;
+                        case "2":
+                            Gereksinim = "9600";
+                            MeslekAd = "Usta Madenci";
+                            break;
+                        case "3":
+                            Gereksinim = "19200";
+                            MeslekAd = "Üstad Madenci";
+                            break;
+                        case "4":
+                            Gereksinim = "32000";
+                            MeslekAd = "Bilge Madenci";
+                            break;
+                        case "5":
+                            Gereksinim = "Son Seviye";
+                            MeslekAd = "Efsanevi Madenci";
+                            break;
                     }
                 }
                 if(MeslekAd.equals("Marangoz"))
                 {
-                    if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("1"))
-                    {
-                        Gereksinim = "500";
-                        MeslekAd = "Keresteci";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("2"))
-                    {
-                        Gereksinim = "1500";
-                        MeslekAd = "Marangoz";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("3"))
-                    {
-                        Gereksinim = "4000";
-                        MeslekAd = "Usta Marangoz";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("4"))
-                    {
-                        Gereksinim = "8000";
-                        MeslekAd = "Odun Katili";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("5"))
-                    {
-                        Gereksinim = "Son Seviye";
-                        MeslekAd = "Odunların Efendisi";
+                    switch (EventsClass.getMeslekSeviye(p.getPlayer().getName())) {
+                        case "1":
+                            Gereksinim = "500";
+                            MeslekAd = "Keresteci";
+                            break;
+                        case "2":
+                            Gereksinim = "1500";
+                            MeslekAd = "Marangoz";
+                            break;
+                        case "3":
+                            Gereksinim = "4000";
+                            MeslekAd = "Usta Marangoz";
+                            break;
+                        case "4":
+                            Gereksinim = "8000";
+                            MeslekAd = "Odun Katili";
+                            break;
+                        case "5":
+                            Gereksinim = "Son Seviye";
+                            MeslekAd = "Odunların Efendisi";
+                            break;
                     }
                 }
                 if(MeslekAd.equals("Ciftci"))
                 {
-                    if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("1"))
-                    {
-                        Gereksinim = "150";
-                        MeslekAd = "Basit Çiftçi";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("2"))
-                    {
-                        Gereksinim = "450";
-                        MeslekAd = "Usta Çiftçi";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("3"))
-                    {
-                        Gereksinim = "800";
-                        MeslekAd = "Tarla Üstadı";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("4"))
-                    {
-                        Gereksinim = "1500";
-                        MeslekAd = "Hasat Katili";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("5"))
-                    {
-                        Gereksinim = "Son Seviye";
-                        MeslekAd = "Ekinlerin Efendisi";
+                    switch (EventsClass.getMeslekSeviye(p.getPlayer().getName())) {
+                        case "1":
+                            Gereksinim = "150";
+                            MeslekAd = "Basit Çiftçi";
+                            break;
+                        case "2":
+                            Gereksinim = "450";
+                            MeslekAd = "Usta Çiftçi";
+                            break;
+                        case "3":
+                            Gereksinim = "800";
+                            MeslekAd = "Tarla Üstadı";
+                            break;
+                        case "4":
+                            Gereksinim = "1500";
+                            MeslekAd = "Hasat Katili";
+                            break;
+                        case "5":
+                            Gereksinim = "Son Seviye";
+                            MeslekAd = "Ekinlerin Efendisi";
+                            break;
                     }
                 }
                 if(MeslekAd.equals("Sifaci"))
@@ -2345,45 +2264,32 @@ public class KomutListesi implements CommandExecutor {
                 }
                 if(MeslekAd.equals("Demirci"))
                 {
-                    if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("1"))
-                    {
-                        Gereksinim = "500";
-                        MeslekAd = "Çırak Demirci";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("2"))
-                    {
-                        Gereksinim = "1500";
-                        MeslekAd = "Usta Demirci";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("3"))
-                    {
-                        Gereksinim = "3000";
-                        MeslekAd = "Üstad Demirci";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("4"))
-                    {
-                        Gereksinim = "7500";
-                        MeslekAd = "Külçe Ustası";
-                    }
-                    else if(EventsClass.getMeslekSeviye(p.getPlayer().getName()).equals("5"))
-                    {
-                        Gereksinim = "Son Seviye";
-                        MeslekAd = "Rün Ustası";
+                    switch (EventsClass.getMeslekSeviye(p.getPlayer().getName())) {
+                        case "1":
+                            Gereksinim = "500";
+                            MeslekAd = "Çırak Demirci";
+                            break;
+                        case "2":
+                            Gereksinim = "1500";
+                            MeslekAd = "Usta Demirci";
+                            break;
+                        case "3":
+                            Gereksinim = "3000";
+                            MeslekAd = "Üstad Demirci";
+                            break;
+                        case "4":
+                            Gereksinim = "7500";
+                            MeslekAd = "Külçe Ustası";
+                            break;
+                        case "5":
+                            Gereksinim = "Son Seviye";
+                            MeslekAd = "Rün Ustası";
+                            break;
                     }
                 }
 
 
                 sender.sendMessage(tl(ChatColor.GREEN+"Mesleğiniz: "+ChatColor.GOLD+MeslekAd+ChatColor.YELLOW+" "+MeslekSV+ ".Seviye [ "+MeslekXP+" / "+Gereksinim+" ]"));
-               // sender.sendMessage(tl(ChatColor.GOLD+"[Bilgi]: "+ChatColor.YELLOW+"XP kısmı test aşamasındadır. Oradaki rakamlar gerçek değildir."));
-                // 	sender.sendMessage(tl(ChatColor.BLUE+"_______________________________"));
-                //sender.sendMessage(tl(ChatColor.YELLOW+"Madenci Seviye: "+ChatColor.GREEN+MadenciSeviye2+ ".Seviye [ "+MadenciXP2+" / "+Gereksinim+" ]"));
-                // 	sender.sendMessage(tl(ChatColor.YELLOW+"Madenci Rütbe: "+ChatColor.LIGHT_PURPLE+MadenciAd));
-                //sender.sendMessage(tl(ChatColor.YELLOW+"Demirci Seviye: "+ChatColor.GREEN+DemirciSeviye2+ ".Seviye [ "+DemirciXP2+" / "+Gereksinim3+" ]"));
-                //	sender.sendMessage(tl(ChatColor.YELLOW+"Demirci Rütbe: "+ChatColor.LIGHT_PURPLE+DemirciAd));
-                //  	sender.sendMessage(tl(ChatColor.YELLOW+"Oduncu Seviye: "+ChatColor.GREEN+OduncuSeviye2+ ".Seviye [ "+OduncuXP2+" / "+Gereksinim2+" ]"));
-                //  	sender.sendMessage(tl(ChatColor.YELLOW+"Oduncu Rütbe: "+ChatColor.LIGHT_PURPLE+OduncuAd));
-                //	sender.sendMessage(tl(ChatColor.YELLOW+"Çiftçi Seviye: "+ChatColor.GREEN+CiftciSeviye2+ ".Seviye [ "+CiftciXP2+" / "+Gereksinim4+" ]"));
-                // 	sender.sendMessage(tl(ChatColor.YELLOW+"Çiftçi Rütbe: "+ChatColor.LIGHT_PURPLE+CiftciAd));
 
 
 

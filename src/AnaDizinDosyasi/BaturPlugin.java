@@ -26,14 +26,7 @@ import static CustomItemler.CustomItems.*;
 public class BaturPlugin extends JavaPlugin implements Listener
 {
     private Connection connection;
-    public String host,database,username,password,table;
-    public int port;
-    public boolean autoReconnect=true;
     public static BaturPlugin plugin;
-
-
-    public static String karakteradi;
-
 
     @Override
     public void onEnable()
@@ -44,10 +37,7 @@ public class BaturPlugin extends JavaPlugin implements Listener
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Sunucu]: Sunucu sistemleri başarıyla aktif edildi.");
         getServer().getPluginManager().registerEvents(new EventsClass(), this);
         getServer().getPluginManager().registerEvents(new CustomItems(), this);
-        //   Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "op");
 
-
-        //this.getCommand("bandaj").setExecutor(new BandajBasma());
         this.getCommand("duyuru").setExecutor(new KomutListesi());
         this.getCommand("karakter").setExecutor(new KomutListesi());
         this.getCommand("me").setExecutor(new KomutListesi());
@@ -142,11 +132,6 @@ public class BaturPlugin extends JavaPlugin implements Listener
 	        }, 1L, 20L);
 */
     }
-
-    public void example(){
-        getServer().getPluginManager().registerEvents(this, this);
-    }
-
 
 
 

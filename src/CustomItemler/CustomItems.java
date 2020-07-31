@@ -1,6 +1,7 @@
 package CustomItemler;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1007,8 +1008,7 @@ public class CustomItems implements Listener
 
     @SuppressWarnings("deprecation")
     @EventHandler
-    public static void DemirZirh(CraftItemEvent e)
-    {
+    public static void DemirZirh(CraftItemEvent e) throws IOException {
         Player player = (Player) e.getWhoClicked();
 
 
@@ -1053,8 +1053,7 @@ public class CustomItems implements Listener
 
 
     @EventHandler
-    public static void Ciftcilik(CraftItemEvent e)
-    {
+    public static void Ciftcilik(CraftItemEvent e) throws IOException {
 
         Player p = (Player) e.getWhoClicked();
 
