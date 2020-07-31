@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 import EventDosyasi.EventsClass;
@@ -13,7 +14,6 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -26,8 +26,6 @@ import AnaDizinDosyasi.BaturPlugin;
 import EventDosyasi.ArmorEquipEvent;
 
 import static EventDosyasi.EventsClass.getzarAtiklik;
-import static EventDosyasi.EventsClass.getzarDayaniklilik;
-
 
 public class CustomItems implements Listener
 {
@@ -36,225 +34,155 @@ public class CustomItems implements Listener
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Silahlar/"+silahisim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("SilahAltZar");
-        return className;
+        return pConfig.getInt("SilahAltZar");
     }
 
     public static int SilahUstZar(String silahisim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Silahlar/"+silahisim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("SilahUstZar");
-        return className;
+        return pConfig.getInt("SilahUstZar");
     }
-    public static String SilahTuru(String silahisim)
-    {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Silahlar/"+silahisim+".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("SilahTuru");
 
-        return className;
-    }
     public static String SilahZari(String silahisim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Silahlar/"+silahisim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("SilahZari");
 
-        return className;
-    }
-    public static int VatandasNo(String silahisim)
-    {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Silahlar/"+silahisim+".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("VatandasNo");
-
-        return className;
-    }
-    public static String AktifPasif(String silahisim)
-    {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Silahlar/"+silahisim+".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Durum");
-
-        return className;
+        return pConfig.getString("SilahZari");
     }
 
     public static String SilahAd(String silahisim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+silahisim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("SilahAD");
 
-        return className;
+        return pConfig.getString("SilahAD");
     }
 
     public static String SilahLore1(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("SilahLore1");
 
-        return className;
+        return pConfig.getString("SilahLore1");
     }
 
     public static String SilahLore2(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("SilahLore2");
 
-        return className;
+        return pConfig.getString("SilahLore2");
     }
 
     public static String SilahLore3(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("SilahLore3");
 
-        return className;
+        return pConfig.getString("SilahLore3");
     }
 
     public static String SilahLore4(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("SilahLore4");
 
-        return className;
+        return pConfig.getString("SilahLore4");
     }
 
     public static String SilahLore5(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("SilahLore5");
 
-        return className;
+        return pConfig.getString("SilahLore5");
     }
 
     public static int SilahDur1(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("SilahDurability1");
 
-        return className;
+        return pConfig.getInt("SilahDurability1");
     }
 
     public static int SilahDur2(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("SilahDurability2");
 
-        return className;
+        return pConfig.getInt("SilahDurability2");
     }
     public static int SilahDur3(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("SilahDurability3");
 
-        return className;
+        return pConfig.getInt("SilahDurability3");
     }
     public static int SilahDur4(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("SilahDurability4");
 
-        return className;
+        return pConfig.getInt("SilahDurability4");
     }
     public static int SilahDur5(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("SilahDurability5");
 
-        return className;
+        return pConfig.getInt("SilahDurability5");
     }
 
     public static String SilahRenk1(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("SilahRenk1");
 
-        return className;
+        return pConfig.getString("SilahRenk1");
     }
 
     public static String SilahRenk2(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("SilahRenk2");
 
-        return className;
+        return pConfig.getString("SilahRenk2");
     }
 
     public static String SilahRenk3(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("SilahRenk3");
 
-        return className;
+        return pConfig.getString("SilahRenk3");
     }
 
     public static String SilahRenk4(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("SilahRenk4");
 
-        return className;
+        return pConfig.getString("SilahRenk4");
     }
 
     public static String SilahRenk5(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("SilahRenk5");
 
-        return className;
-    }
-
-    public static String ACHELM(String SilahIsim)
-    {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("ACHelm");
-
-        return className;
+        return pConfig.getString("SilahRenk5");
     }
 
     public static String ACCHEST(String SilahIsim)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("ACChest");
 
-        return className;
-    }
-
-    public static String ACLEGG(String SilahIsim)
-    {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("ACLegg");
-
-        return className;
-    }
-
-    public static String ACBOOTS(String SilahIsim)
-    {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder().getAbsolutePath(), "/Silahlar/"+SilahIsim+".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("ACBoot");
-
-        return className;
+        return pConfig.getString("ACChest");
     }
 
     @EventHandler
@@ -277,13 +205,12 @@ public class CustomItems implements Listener
             if(event.getOldArmorPiece().getType().equals(Material.LEATHER_CHESTPLATE) || event.getOldArmorPiece().getType().equals(Material.IRON_CHESTPLATE) || event.getOldArmorPiece().getType().equals(Material.GOLDEN_CHESTPLATE))
             {
                 event.getPlayer().sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.YELLOW+"Goguslugunu cikardin.");
-                System.out.println("--"+SilahAd(ChatColor.stripColor(event.getOldArmorPiece().getItemMeta().getDisplayName()))+"--");
+                System.out.println("--"+SilahAd(ChatColor.stripColor(Objects.requireNonNull(event.getOldArmorPiece().getItemMeta()).getDisplayName()))+"--");
                 if(event.getOldArmorPiece().getItemMeta().getDisplayName().contains(ChatColor.stripColor(SilahAd(ChatColor.stripColor(event.getOldArmorPiece().getItemMeta().getDisplayName())))))
                 {
 
 
                     int bonuscev = EventsClass.BonusCeviklik(EventsClass.GetIrk(event.getPlayer().getName()));
-                    int bonusceviklikac = EventsClass.BonusCeviklik(event.getPlayer().getName());
                     int tempac = ((Integer.valueOf(getzarAtiklik(event.getPlayer().getName())) + bonuscev - 10) / 2);
                     tempac = tempac + 10;
                     EventsClass.setAC(event.getPlayer().getName(),tempac);
@@ -317,7 +244,6 @@ public class CustomItems implements Listener
                 System.out.println("--"+SilahAd(ChatColor.stripColor(event.getNewArmorPiece().getItemMeta().getDisplayName()))+"--");
                 if(event.getNewArmorPiece().getItemMeta().getDisplayName().contains(ChatColor.stripColor(SilahAd(ChatColor.stripColor(event.getNewArmorPiece().getItemMeta().getDisplayName())))))
                 {
-                    int Temp = EventDosyasi.EventsClass.getAC(event.getPlayer().getName());
                     int TempAc = Integer.parseInt(ACCHEST((SilahAd(ChatColor.stripColor(event.getNewArmorPiece().getItemMeta().getDisplayName())))));
                     EventDosyasi.EventsClass.setAC(event.getPlayer().getName(), Integer.valueOf(10+TempAc));
                 }
@@ -345,47 +271,6 @@ public class CustomItems implements Listener
 
     }
 
-
-    public static void EmeraldSword()
-    {
-        ItemStack item = new ItemStack(Material.DIAMOND_SWORD);
-
-        // The meta of the diamond sword where we can change the name, and properties of the item.
-        ItemMeta meta = item.getItemMeta();
-
-        // We will initialise the next variable after changing the properties of the sword
-
-        // This sets the name of the item.
-        meta.setDisplayName("Emerald Sword");
-        meta.setLocalizedName(ChatColor.GREEN + "kisa");
-
-        // Set the meta of the sword to the edited meta.
-        item.setItemMeta(meta);
-
-        // Add the custom enchantment to make the emerald sword special
-        // In this case, we're adding the permission that modifies the damage value on level 5
-        // Level 5 is represented by the second parameter. You can change this to anything compatible with a sword
-        item.addEnchantment(Enchantment.DAMAGE_ALL, 5);
-
-
-        // create a NamespacedKey for your recipe
-        NamespacedKey key = new NamespacedKey(BaturPlugin.plugin, "Emerald_Sword");
-
-        // Create our custom recipe variable
-        ShapedRecipe recipe = new ShapedRecipe(key, item);
-
-        // Here we will set the places. E and S can represent anything, and the letters can be anything. Beware; this is case sensitive.
-        recipe.shape(" E ", " E ", " S ");
-
-        // Set what the letters represent.
-        // E = Emerald, S = Stick
-        recipe.setIngredient('E', Material.EMERALD);
-        recipe.setIngredient('S', Material.STICK);
-
-        // Finally, add the recipe to the bukkit recipes
-        Bukkit.addRecipe(recipe);
-
-    }
     public static void Sifac()
     {
         try

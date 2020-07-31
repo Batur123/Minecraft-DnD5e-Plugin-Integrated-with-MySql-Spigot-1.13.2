@@ -72,7 +72,6 @@ public class BaturPlugin extends JavaPlugin implements Listener
         this.getCommand("mesleksifirla").setExecutor(new KomutListesi());
         this.getCommand("baslangic").setExecutor(new KomutListesi());
 
-        EmeraldSword();
         Kalkanlar();
         Arbalet();
         Itemlerv2();

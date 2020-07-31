@@ -49,32 +49,8 @@ public class EventsClass implements Listener {
     public String url = "jdbc:mysql://localhost:3306/karakter?autoReconnect=true&useSSL=true";
     public String user = "root";
     public String pass = "test";
-
-    public int BasvuruDurum;
-    public String ForumAdi;
-    public String OyunAdi;
-    public String KarakterAdi;
-    public String Sifre;
-    public String Yas;
-    public int StatTemp;
-
-    public String Meslek;
-    public int MeslekXP;
-    public int MeslekSV;
-
-    public String MadenciXP1, MadenciSeviye1;
-
-    public String oyuncumadencixp, oyuncudemircixp, oyuncuavcixp, oyuncuoduncuxp;
-    public String oyuncumadencisv, oyuncudemircisv, oyuncuavcisv, oyuncuoduncusv;
-
-    public int guc;
-    public int bilgelik;
-    public int atiklik;
-    public int buyu;
-    public int dayaniklilik;
-    public int karizma;
-    public String Irk;
-    public String CK_Durum;
+    public String ForumAdi,OyunAdi,KarakterAdi,Sifre,Yas,Meslek,MadenciXP1,MadenciSeviye1,Irk,CK_Durum,oyuncumadencixp, oyuncudemircixp, oyuncuavcixp, oyuncuoduncuxp,oyuncumadencisv, oyuncudemircisv, oyuncuavcisv, oyuncuoduncusv;
+    public int StatTemp,MeslekXP,MeslekSV,guc,bilgelik,atiklik,buyu,dayaniklilik,karizma,BasvuruDurum;
 
     @EventHandler
     public void onMove(PlayerMoveEvent e)
@@ -1907,8 +1883,6 @@ public class EventsClass implements Listener {
                      * e.getPlayer().removePotionEffect(effect.getType()); }
                      */
 
-                    e.setCancelled(true);
-
                 }
                 else
                 {
@@ -1918,9 +1892,9 @@ public class EventsClass implements Listener {
                             ChatColor.GOLD + "[Flowing Tears]: " + ChatColor.RED + "Şifrenizi hatalı girdiniz.");
                     // e.getPlayer().kickPlayer(ChatColor.GOLD +"[Flowing Tears]:
                     // "+ChatColor.RED+"ï¿½ifrenizi hatalï¿½ girdiniz." );
-                    e.setCancelled(true);
 
                 }
+                e.setCancelled(true);
             } else if (getKontrol(e.getPlayer().getName()).equals("evet")) // ï¿½ifre girdiyse chatten konusabilir.
             {
 
@@ -2147,7 +2121,7 @@ public class EventsClass implements Listener {
             setAC(e.getPlayer().getName(), 10);
             setKontrol(e.getPlayer().getName(), "hayir");
 
-            if (getKontrol(p.getPlayer().getName()).equals("hayir")) {
+            if (getKontrol(Objects.requireNonNull(p.getPlayer()).getName()).equals("hayir")) {
                 // Oyuncunun HP'si -> 25 + [(Dayanï¿½klï¿½lï¿½k Bonusu - 10)*2]
 
                 p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 999999999, 999999999));
@@ -2190,7 +2164,7 @@ public class EventsClass implements Listener {
         if (!p.hasPlayedBefore()) {
             ItemStack dimetrium = new ItemStack(Material.IRON_NUGGET, 25);
             ItemMeta meta = dimetrium.getItemMeta();
-            meta.setDisplayName(ChatColor.GOLD + "Oren");
+            Objects.requireNonNull(meta).setDisplayName(ChatColor.GOLD + "Oren");
             ArrayList<String> lore = new ArrayList<String>();
             lore.add(ChatColor.LIGHT_PURPLE + "Madeni Para");
             meta.setLore(lore);
@@ -2198,7 +2172,7 @@ public class EventsClass implements Listener {
 
             ItemStack dimetrium2 = new ItemStack(Material.BREAD, 5);
             ItemMeta meta2 = dimetrium2.getItemMeta();
-            meta2.setDisplayName(ChatColor.GOLD + "Ekmek");
+            Objects.requireNonNull(meta2).setDisplayName(ChatColor.GOLD + "Ekmek");
             ArrayList<String> lore2 = new ArrayList<String>();
             lore2.add(ChatColor.LIGHT_PURPLE + "Sıcacık ekmek...");
             meta2.setLore(lore2);
@@ -2227,7 +2201,7 @@ public class EventsClass implements Listener {
                 Bukkit.getConsoleSender()
                         .sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.GREEN
                                 + "Oyuncunun veritabanında kaydı bulunamadı. (" + ChatColor.GOLD + " Oyuncunun Adı: "
-                                + ChatColor.GREEN + player.getPlayer().getName() + ")");
+                                + ChatColor.GREEN + Objects.requireNonNull(player.getPlayer()).getName() + ")");
 
             } else {
 
@@ -2308,7 +2282,7 @@ public class EventsClass implements Listener {
                             // baï¿½vurunuzu yapï¿½nï¿½z. Karakteriniz bulunamadï¿½.");
                             Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE
                                     + "[Bilgi]: Oyuncunun veritabanında kaydı bulundu fakat başvurusu kabul edilmemiş. ("
-                                    + ChatColor.GREEN + " Oyuncunun Adı: " + player.getPlayer().getName() + ")");
+                                    + ChatColor.GREEN + " Oyuncunun Adı: " + Objects.requireNonNull(player.getPlayer()).getName() + ")");
 
                         }
 
@@ -2316,7 +2290,8 @@ public class EventsClass implements Listener {
                                 ChatColor.GREEN + "[Sunucu]: " + OyunAdi + " oyuna bağlantı");
 
                         File pFileDir = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular");
-                        if (!pFileDir.exists()) {
+                        if (!pFileDir.exists())
+                        {
                             pFileDir.mkdir();
                         }
                         File pFile = new File(BaturPlugin.getInstance().getDataFolder(),
@@ -2421,12 +2396,6 @@ public class EventsClass implements Listener {
 
     }
 
-    public static String getOyunNick(String p) {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        return pConfig.getString("Minecraft_Adi");
-    }
-
     public void setKontrol(String p, String kontroldurumu) throws IOException {
 
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
@@ -2525,79 +2494,12 @@ public class EventsClass implements Listener {
 
     }
 
-
-    public static void setCan(String p, String Can) throws IOException {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        pConfig.set("Can", Can);
-
-            pConfig.save(pFile);
-
-    }
-
-
-    public static int getCan(String p) {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        return pConfig.getInt("Can");
-    }
-
-    public static void setArmor(String p, String Can) throws IOException {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        pConfig.set("Can", Can);
-
-            pConfig.save(pFile);
-
-    }
-
-    public static int getArmor(String p) {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        return pConfig.getInt("Can");
-    }
-
-    public static String getAclik(String p) {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        return pConfig.getString("Gorunus");
-    }
-
-    public static void setAclik(String p, String Aclik) throws IOException {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        pConfig.set("DemirciSv", Aclik);
-
-            pConfig.save(pFile);
-
-    }
-
     public static void setCK(String p, String CKmi) throws IOException {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("CK_Durum", CKmi);
+        pConfig.save(pFile);
 
-        try {
-            pConfig.save(pFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static String getAclikKontrol(String p) {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Gorunus");
-        return className;
-    }
-
-    public static void setAclikKontrol(String p, String AclikKontrol) throws IOException {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        pConfig.set("AclikKontrolLimiti", AclikKontrol);
-
-            pConfig.save(pFile);
 
     }
 
@@ -2626,55 +2528,10 @@ public class EventsClass implements Listener {
         }
     }
 
-
-
-    public static String getSinif(String p) {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Sinif");
-        return className;
-    }
-
-    /*
-     * public static String getCiftciXP(String p) { File pFile = new
-     * File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" +
-     * p.toLowerCase() + ".yml"); FileConfiguration pConfig =
-     * YamlConfiguration.loadConfiguration(pFile); String className =
-     * pConfig.getString("CiftciXP"); return className; }
-     *
-     * public static String getCiftciSV(String p) { File pFile = new
-     * File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" +
-     * p.toLowerCase() + ".yml"); FileConfiguration pConfig =
-     * YamlConfiguration.loadConfiguration(pFile); String className =
-     * pConfig.getString("CiftciSV"); return className; }
-     */
-
-
-
-	/*public static String getMeslekXP(String p) {
-		File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-		FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-		String className = pConfig.getString("MadenciXP");
-		return className;
-	} */
-
-
-
-    public void setYetkiSeviye(String p, String YetkiSeviyesi) throws IOException {
-
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        pConfig.set("YetkiSeviyesi", YetkiSeviyesi);
-
-            pConfig.save(pFile);
-
-    }
-
     public static String getMeslek(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Meslek");
-        return className;
+        return pConfig.getString("Meslek");
     }
 
 
@@ -2687,108 +2544,63 @@ public class EventsClass implements Listener {
             pConfig.save(pFile);
 
     }
-    // oduncu xp,sv set get tamam
-    // avci xp sv set get tamam
-
-    public static String getYetkiSeviye(String p) {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Gorunus");
-        return className;
-    }
-
-    public static String silahBilgiAl(String p) {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Gorunus");
-        return className;
-    }
-
-    public void silahBilgiVer(String p, String YetkiSeviyesi) {
-
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        pConfig.set("YetkiSeviyesi", YetkiSeviyesi);
-        try {
-            pConfig.save(pFile);
-        } catch (Exception e) {
-
-        }
-    }
 
     public static String GetIrk(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Irk");
-        return className;
+        return pConfig.getString("Irk");
     }
 
-    public static String IrkAd(String p) {
-        File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Irklar/" + p + ".yml");
-        FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("IrkAd");
-        return className;
-    }
 
     public static int BonusKarizma(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Irklar/" + p + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("Karizma");
-        return className;
+        return pConfig.getInt("Karizma");
     }
 
     public static int BonusKuvvet(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Irklar/" + p + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("Kuvvet");
-        return className;
+        return pConfig.getInt("Kuvvet");
     }
 
     public static int BonusCeviklik(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Irklar/" + p + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("Ceviklik");
-        return className;
+        return pConfig.getInt("Ceviklik");
     }
 
     public static int BonusBilgelik(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Irklar/" + p + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("Bilgelik");
-        return className;
+        return pConfig.getInt("Bilgelik");
     }
 
-    public static void setKarakterAd(String p, String kontroldurumu) {
+    public static void setKarakterAd(String p, String kontroldurumu) throws IOException {
 
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("Karakter_Adi", kontroldurumu);
-        try {
             pConfig.save(pFile);
-        } catch (Exception e) {
 
-        }
     }
 
     public static int BonusZeka(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Irklar/" + p + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("Zeka");
-        return className;
+        return pConfig.getInt("Zeka");
     }
 
     public static int BonusDay(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Irklar/" + p + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("Dayaniklilik");
-        return className;
+        return pConfig.getInt("Dayaniklilik");
     }
 
     public static int getMaskeDurum(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("MaskeDurum");
-        return className;
+        return pConfig.getInt("MaskeDurum");
     }
 
     public static void setMaskeDurum(String p, int MaskeDurum) throws IOException {
@@ -2804,8 +2616,7 @@ public class EventsClass implements Listener {
     public static int getAC(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        int className = pConfig.getInt("AC");
-        return className;
+        return pConfig.getInt("AC");
     }
 
     public static void setAC(String p, int AC) throws IOException {

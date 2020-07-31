@@ -2002,7 +2002,7 @@ public class KomutListesi implements CommandExecutor {
                 StringBuilder s = new StringBuilder();
 
                 for (String arg : args) {
-                    s.append(arg + " ");
+                    s.append(arg);
                 }
 
 
