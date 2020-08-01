@@ -111,7 +111,7 @@ public class EventsClass implements Listener {
                     if (event1.getPlayer().isOp())
                     {
 
-                        int guc = Integer.valueOf(EventsClass.getzarGuc(clicked.getPlayer().getName()));
+                        int guc = Integer.valueOf(EventsClass.getzarGuc(Objects.requireNonNull(clicked.getPlayer()).getName()));
                         int atiklik  = Integer.valueOf(EventsClass.getzarAtiklik(clicked.getPlayer().getName()));
                         int dayaniklilik  = Integer.valueOf(EventsClass.getzarDayaniklilik(clicked.getPlayer().getName()));
                         int buyu  = Integer.valueOf(EventsClass.getzarBuyu(clicked.getPlayer().getName()));
@@ -229,10 +229,6 @@ public class EventsClass implements Listener {
             player.getInventory().clear();
             OyuncuKickle(player, ChatColor.GOLD + "[Flowing Tears] " + ChatColor.RED
                     + "Karakteriniz öldü. Lütfen karakter panelinden karakterinizi tekrardan ayarlayınız.");
-            // player.kickPlayer(ChatColor.GOLD+"[Flowing Tears]
-            // "+ChatColor.RED+"Karakteriniz ï¿½ldï¿½. Bundan sonra oynamanï¿½z mï¿½mkï¿½n deï¿½il.
-            // Lï¿½tfen forumdaki karakter paneline dï¿½nï¿½nï¿½z ve tekrar karakterinizi
-            // hazï¿½rlayï¿½nï¿½z.");
 
             Connection connect = null;
             PreparedStatement pre = null;
@@ -246,7 +242,7 @@ public class EventsClass implements Listener {
                 String sql = "UPDATE karakter " + "SET KarakterAdi = ? , " + "CK_Durum = ? , Meslek = ? WHERE OyunAdi = ? ";
 
                 pre = connect.prepareStatement(sql);
-                pre.setString(1, getKarakterAd(player.getPlayer().getName()));
+                pre.setString(1, getKarakterAd(Objects.requireNonNull(player.getPlayer()).getName()));
                 pre.setInt(2, 1);
                 pre.setString(3, "yok");
                 pre.setString(4, player.getPlayer().getName());
@@ -386,6 +382,20 @@ public class EventsClass implements Listener {
                 int MadenciSeviyeInt1 = Integer.valueOf(MadenciSeviye1);
 
 
+                for(int sayim=1; sayim<=5; sayim++)
+                {
+                        switch (MadenciSeviye1)
+                        {
+                            case "1":
+
+                                break;
+
+                            case "2":
+
+                                break;
+
+                        }
+                }
                 if (MadenciSeviyeInt1 == 1) {
 
                     if (e.getBlock().getType() == Material.STONE || e.getBlock().getType() == Material.COAL_ORE
@@ -706,32 +716,35 @@ public class EventsClass implements Listener {
 
                         // Block Kï¿½rdï¿½kï¿½a Madenci XP'yi arttï¿½rma
 
-                        if (getMeslekXP(e.getPlayer().getName()).equals("3200")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Tebrikler! Damarlarï¿½nda akan o maden coï¿½kusunu hissedebiliyorsun. " + ChatColor.GREEN
-                                    + "(2.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 2);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("9600")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Tebrikler! Kazdï¿½ï¿½ï¿½n madenlerin seni daha fazla gï¿½ï¿½lï¿½ yaptï¿½ï¿½ï¿½nï¿½ hissetmeye baï¿½ladï¿½n. "
-                                    + ChatColor.BLUE + "(3.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 3);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("19200")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Etrafï¿½nda garip sesler duymaya baï¿½lï¿½yorsun. Hangi taï¿½ta hangi maden olduï¿½unu gï¿½rebilecek kadar gï¿½ï¿½lendin. "
-                                    + ChatColor.YELLOW + "(4.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 4);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("32000")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Karanlï¿½ï¿½ï¿½n gï¿½cï¿½ iï¿½ine doï¿½ru ï¿½ekiliyor. Artï¿½k o kadar ï¿½ok maden iï¿½inde ustalaï¿½tï¿½n ki karanlï¿½kta ï¿½nï¿½nï¿½ gï¿½rebiliyorsun! "
-                                    + ChatColor.LIGHT_PURPLE + "(Efsanevi Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 5);
+                        switch (getMeslekXP(e.getPlayer().getName())) {
+                            case "3200":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Tebrikler! Damarlarï¿½nda akan o maden coï¿½kusunu hissedebiliyorsun. " + ChatColor.GREEN
+                                        + "(2.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 2);
+                                break;
+                            case "9600":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Tebrikler! Kazdï¿½ï¿½ï¿½n madenlerin seni daha fazla gï¿½ï¿½lï¿½ yaptï¿½ï¿½ï¿½nï¿½ hissetmeye baï¿½ladï¿½n. "
+                                        + ChatColor.BLUE + "(3.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 3);
+                                break;
+                            case "19200":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Etrafï¿½nda garip sesler duymaya baï¿½lï¿½yorsun. Hangi taï¿½ta hangi maden olduï¿½unu gï¿½rebilecek kadar gï¿½ï¿½lendin. "
+                                        + ChatColor.YELLOW + "(4.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 4);
+                                break;
+                            case "32000":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Karanlï¿½ï¿½ï¿½n gï¿½cï¿½ iï¿½ine doï¿½ru ï¿½ekiliyor. Artï¿½k o kadar ï¿½ok maden iï¿½inde ustalaï¿½tï¿½n ki karanlï¿½kta ï¿½nï¿½nï¿½ gï¿½rebiliyorsun! "
+                                        + ChatColor.LIGHT_PURPLE + "(Efsanevi Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 5);
+                                break;
                         }
 
                     }
-                    // Madencinin XP almasï¿½ iï¿½in kï¿½rï¿½lmasï¿½ gereken materyaller
 
-                    // MADENCï¿½Nï¿½N ORJï¿½NAL ORE LARI KAZMASI
                     if (e.getBlock().getType() == Material.COAL_ORE || e.getBlock().getType() == Material.DIAMOND_ORE
                             || e.getBlock().getType() == Material.IRON_ORE || e.getBlock().getType() == Material.EMERALD_ORE
                             || e.getBlock().getType() == Material.GOLD_ORE || e.getBlock().getType() == Material.LAPIS_ORE
@@ -2134,7 +2147,6 @@ public class EventsClass implements Listener {
                     //                                    * 1.5));
                     int bonusday = EventsClass.BonusDay(EventsClass.GetIrk(e.getPlayer().getName()));
                     int bonuscev = EventsClass.BonusCeviklik(EventsClass.GetIrk(e.getPlayer().getName()));
-                    int bonusceviklikac = EventsClass.BonusCeviklik(e.getPlayer().getName());
                     p.setMaxHealth(25 + ((Integer.valueOf(getzarDayaniklilik(p.getPlayer().getName())) + bonusday - 10) / 2) * 1.5);
                     int tempac = ((Integer.valueOf(getzarAtiklik(p.getPlayer().getName())) + bonuscev - 10) / 2);
                     tempac = tempac + 10;
@@ -2375,24 +2387,21 @@ public class EventsClass implements Listener {
     public static String getSifre(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Sifre");
-        return className;
+        return pConfig.getString("Sifre");
 
     }
 
     public static String getKarakterAd(String p) {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Karakter_Adi");
-        return className;
+        return pConfig.getString("Karakter_Adi");
     }
 
     public static String getKontrol(String p) {
 
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        String className = pConfig.getString("Girdi_Kontrol");
-        return className;
+        return pConfig.getString("Girdi_Kontrol");
 
     }
 

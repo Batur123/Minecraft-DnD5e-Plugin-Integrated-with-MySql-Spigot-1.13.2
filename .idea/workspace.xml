@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="8" />
+    <option name="CUSTOM_SCOPE_NAME" value="All Places" />
+  </component>
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
       <artifact name="BaturPluginIdea" />
@@ -11,6 +15,9 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -33,6 +40,11 @@
       </list>
     </option>
   </component>
+  <component name="ProblemsViewState">
+    <hideBySeverity>
+      <option value="15" />
+    </hideBySeverity>
+  </component>
   <component name="ProjectId" id="1PnZcrC7bJqCeVVIq5TWFXAEuYi" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -43,13 +55,15 @@
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="baturpluginidea" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="SDKs" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.editor" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="preferences.editor.code.editing" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -103,7 +117,12 @@
       <workItem from="1588451104375" duration="165000" />
       <workItem from="1588520011438" duration="271000" />
       <workItem from="1590402543069" duration="60000" />
-      <workItem from="1596208692988" duration="3580000" />
+      <workItem from="1596208692988" duration="3834000" />
+      <workItem from="1596286606318" duration="1418000" />
+      <workItem from="1596288063082" duration="839000" />
+      <workItem from="1596289268251" duration="461000" />
+      <workItem from="1596296222861" duration="93000" />
+      <workItem from="1596296357585" duration="340000" />
     </task>
     <servers />
   </component>
@@ -115,14 +134,18 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="349" y="361" key="#SQL_Dialects/0.0.1920.1040@0.0.1920.1040" timestamp="1596211296213" />
-    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1596209260284">
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1596289365461">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1596209260284" />
-    <state x="440" y="94" key="SettingsEditor" timestamp="1596209264146">
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1596289365461" />
+    <state x="807" y="116" key="SettingsEditor" timestamp="1596289669896">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="440" y="94" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1596209264146" />
+    <state x="807" y="116" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1596289669896" />
+    <state x="342" y="140" key="new project wizard" timestamp="1596212529316">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="342" y="140" key="new project wizard/0.0.1920.1040@0.0.1920.1040" timestamp="1596212529316" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
