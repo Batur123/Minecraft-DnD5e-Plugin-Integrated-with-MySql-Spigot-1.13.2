@@ -13,15 +13,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import com.mysql.jdbc.Connection;
-
 import CustomItemler.CustomItems;
 import Komutlar.KomutListesi;
 import EventDosyasi.ArmorListener;
 import EventDosyasi.DispenserArmorListener;
 import EventDosyasi.EventsClass;
-
 import static CustomItemler.CustomItems.*;
-
 
 public class BaturPlugin extends JavaPlugin implements Listener
 {
@@ -31,7 +28,6 @@ public class BaturPlugin extends JavaPlugin implements Listener
     @Override
     public void onEnable()
     {
-
         plugin = this;
 
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[Sunucu]: Sunucu sistemleri başarıyla aktif edildi.");
@@ -77,115 +73,58 @@ public class BaturPlugin extends JavaPlugin implements Listener
         Itemlerv2();
         ZirhCraft();
         Sifac();
-
         mysqlSetup();
-
         saveDefaultConfig();
+
         getServer().getPluginManager().registerEvents(new ArmorListener(getConfig().getStringList("blocked")), this);
-        try{
-            //Better way to check for this? Only in 1.13.1+?
+        try
+        {
             Class.forName("org.bukkit.event.block.BlockDispenseArmorEvent");
             getServer().getPluginManager().registerEvents(new DispenserArmorListener(), this);
-        }catch(Exception ignored){}
-        //example();
-	/*      Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
-	        {
-	          public void run() {
-
-	        	  for (Player p : Bukkit.getOnlinePlayers()) {
-
-	                    final ItemStack h = p.getInventory().getHelmet();
-	                    final ItemStack c = p.getInventory().getChestplate();
-	                    final ItemStack l = p.getInventory().getLeggings();
-	                    final ItemStack b = p.getInventory().getBoots();
-
-	                    if (h != null && h.hasItemMeta() && h.getItemMeta().hasDisplayName())
-	                    {
-
-	                        if (p.getInventory().getHelmet().getItemMeta().getDisplayName().equalsIgnoreCase("§4Zeus Helmet of Power")) {
-	                        }
-	                    }
-
-	                    if (c.getType() != Material.AIR) {
-	                      if (c.getItemMeta().getDisplayName() != null) {
-	                        if (p.getInventory().getChestplate().getItemMeta().getDisplayName().equalsIgnoreCase("§4Zeus Chestplate of Speed")) {
-	                        }
-	                      }
-	                    }
-	                    if (l.getType() != Material.AIR) {
-	                      if (l.getItemMeta().getDisplayName() != null) {
-	                        if (p.getInventory().getLeggings().getItemMeta().getDisplayName().equalsIgnoreCase("§4Zeus Leggings of Resistance")) {
-	                        }
-	                      }
-	                    }
-	                    if (b.getType() != Material.AIR) {
-	                      if (b.getItemMeta().getDisplayName() != null) {
-	                        if (p.getInventory().getBoots().getItemMeta().getDisplayName().equalsIgnoreCase("§cBunny Boots")) {
-	                        }
-	                      }
-	                    }
-
-	              }
-
-	          }
-	        }, 1L, 20L);
-*/
+        }
+        catch(Exception ignored)
+        {
+            //reddedildi
+        }
     }
 
-
-
+    /*
+    Sunucu kapatılırken tüm sunucudaki oyuncuların bilgilerini veritabanına kaydeder.
+     */
     @Override
     public void onDisable()
     {
         getServer().getConsoleSender().sendMessage(ChatColor.DARK_RED + "[Sunucu]: Sunucu sistemleri durduruluyor. Sunucu kapanacak.");
-
         for(Player pm : Bukkit.getOnlinePlayers())
         {
-
-
             java.sql.Connection connect = null;
             PreparedStatement pre = null;
-
             try
             {
-
-
-
                 Class.forName("com.mysql.jdbc.Driver");
-                connect = DriverManager
-                        .getConnection("jdbc:mysql://localhost/karakter" + "?useUnicode=true&characterEncoding=utf-8&user=root&password=test");
-
-                String sql = "UPDATE karakter " + "SET KarakterAdi = ? "
-                        + ", guc = ? , bilgelik = ? , atiklik = ? , buyu = ? , dayaniklilik = ? , karizma = ? , meslek = ? , MeslekXP = ? , MeslekSV = ?  " + " WHERE OyunAdi = ? ";
-
+                connect = DriverManager.getConnection("jdbc:mysql://localhost/karakter" + "?useUnicode=true&characterEncoding=utf-8&user=root&password=test");
+                String sql = "UPDATE karakter " + "SET KarakterAdi = ? " + ", guc = ? , bilgelik = ? , atiklik = ? , buyu = ? , dayaniklilik = ? , karizma = ? , meslek = ? , MeslekXP = ? , MeslekSV = ?  " + " WHERE OyunAdi = ? ";
                 pre = connect.prepareStatement(sql);
+
                 pre.setString(1, EventDosyasi.EventsClass.getKarakterAd(pm.getPlayer().getName()));
                 //	pre.setString(5, EventDosyasi.EventsClass.getCiftciXP(pm.getPlayer().getName()));
                 pre.setString(2, EventDosyasi.EventsClass.getzarGuc(pm.getPlayer().getName()));
-
-
                 pre.setString(3, EventDosyasi.EventsClass.getzarBilgelik(pm.getPlayer().getName()));
                 pre.setString(4, EventDosyasi.EventsClass.getzarAtiklik(pm.getPlayer().getName()));
                 pre.setString(5, EventDosyasi.EventsClass.getzarBuyu(pm.getPlayer().getName()));
-                pre.setString(6,EventDosyasi.EventsClass.getzarDayaniklilik(pm.getPlayer().getName()));
+                pre.setString(6, EventDosyasi.EventsClass.getzarDayaniklilik(pm.getPlayer().getName()));
                 pre.setString(7, EventDosyasi.EventsClass.getzarKarizma(pm.getPlayer().getName()));
                 pre.setString(8, EventDosyasi.EventsClass.getMeslek(pm.getPlayer().getName()));
                 pre.setString(9, EventDosyasi.EventsClass.getMeslekXP(pm.getPlayer().getName()));
-                pre.setString(10, EventDosyasi.EventsClass.getMeslekSeviye(pm.getPlayer().getName()));
-
-                pre.setString(11, pm.getPlayer().getName());
-
+                pre.setString(10,EventDosyasi.EventsClass.getMeslekSeviye(pm.getPlayer().getName()));
+                pre.setString(11,pm.getPlayer().getName());
                 pre.executeUpdate();
-
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN+"[Bilgi]: "+ChatColor.RED+ pm.getPlayer().getName() +ChatColor.GREEN+" isimli oyuncunun bilgileri reload sırasında veritabanına kaydedildi.");
-
             }
             catch (Exception d)
             {
-
                 d.printStackTrace();
             }
-
             try
             {
                 if(connect != null)
@@ -196,7 +135,6 @@ public class BaturPlugin extends JavaPlugin implements Listener
             }
             catch (SQLException s)
             {
-
                 s.printStackTrace();
             }
         }
@@ -210,28 +148,20 @@ public class BaturPlugin extends JavaPlugin implements Listener
 
     public void mysqlSetup()
     {
-
-
         String url="jdbc:mysql://localhost:3306/karakter?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=true";
         String user="root";
         String pass="test";
-
-
         try
         {
-
-            synchronized(this) {
+            synchronized(this)
+            {
                 if(getConnection() != null && !getConnection().isClosed())
                 {
                     return;
                 }
-
                 Class.forName("com.mysql.jdbc.Driver");
-
                 setConnection((Connection) DriverManager.getConnection(url,user,pass));
-
-
-                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Sunucu]: Sunucu sistemleri ile websitesi veritabanı arasındaki SQL bağlantısı başarıyla kuruldu.");
+                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Sunucu]: Sunucu sistemleri ile websitesi arasındaki SQL bağlantısı başarıyla kuruldu.");
             }
         }
         catch (ClassNotFoundException | SQLException cd)
@@ -240,7 +170,8 @@ public class BaturPlugin extends JavaPlugin implements Listener
         }
     }
 
-    public Connection getConnection() {
+    public Connection getConnection()
+    {
         return connection;
     }
 
@@ -249,7 +180,6 @@ public class BaturPlugin extends JavaPlugin implements Listener
         this.connection = connection;
     }
 
-
     public static String getKarakterAd(String p)
     {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
@@ -257,37 +187,8 @@ public class BaturPlugin extends JavaPlugin implements Listener
         String className = pConfig.getString("Karakter_Adi");
         System.out.println(className);
         return className;
-
-
     }
-
-
 }
-
-
-
-
-/*
-
-
-
-
-public void loadConfig()
- {
-	 getConfig().options().copyDefaults(true);
-	 saveConfig();
- }
-
-
-
- loadConfig();
-
-
-  /*setConnection((Connection) DriverManager.getConnection("jdbc:mysql://" + this.host + ":" + this.port + "/" + this.database, this.username,this.password ) ); */
-
-
-
-
 
 
 

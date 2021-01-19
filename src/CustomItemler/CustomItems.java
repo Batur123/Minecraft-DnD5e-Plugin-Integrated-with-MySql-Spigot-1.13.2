@@ -907,7 +907,7 @@ public class CustomItems implements Listener
                 //   {
 
                 int Temp;
-                Temp = Integer.valueOf(EventDosyasi.EventsClass.getMeslekXP(player.getName()));
+                Temp = Integer.parseInt(EventDosyasi.EventsClass.getMeslekXP(player.getName()));
                 Temp = Temp + 1;
                 EventDosyasi.EventsClass.setMeslekXP(player.getName(),Temp);
 

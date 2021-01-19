@@ -14,17 +14,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-
-public class KomutListesi implements CommandExecutor {
-
-
+public class KomutListesi implements CommandExecutor
+{
     public static String MaskeAd;
     public String Gereksinim="null";
 
@@ -32,11 +29,7 @@ public class KomutListesi implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
-
-//=======================================================================================================================================================================================================================
-//      /DUYURU KOMUTU
-//=======================================================================================================================================================================================================================
-
+        //Admin Duyuru
         if (cmd.getName().equalsIgnoreCase("duyuru"))
         {
             if (!sender.hasPermission("broadcast.broadcast"))
@@ -66,8 +59,7 @@ public class KomutListesi implements CommandExecutor {
             Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD+"[Duyuru]: "+ChatColor.BLUE+s.toString()+ ChatColor.DARK_RED +" (Kullanan Yönetici: "+sender.getName()+")");
         }
 
-
-
+        //Admin Chat
         if (cmd.getName().equalsIgnoreCase("a"))
         {
             if (sender.isOp())
@@ -81,24 +73,17 @@ public class KomutListesi implements CommandExecutor {
                 else
                 {
                     StringBuilder s = new StringBuilder();
-
-                    for (String arg : args) {
+                    for (String arg : args)
+                    {
                         s.append(arg + " ");
                     }
-
-
                     for (Player on : Bukkit.getOnlinePlayers())
                     {
-
-
                         if(on.isOp())
                         {
                             on.sendMessage(tl(ChatColor.GREEN + "[Admin Chat]"+ChatColor.YELLOW+ sender.getName()+ ChatColor.WHITE +": "+ s.toString()));
 
                         }
-
-
-
                     }
                     Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "[Admin Chat]"+ChatColor.YELLOW+ sender.getName()+ ChatColor.WHITE +": "+ s.toString());
                 }
@@ -108,14 +93,9 @@ public class KomutListesi implements CommandExecutor {
                 sender.sendMessage(tl(ChatColor.GOLD+"[Sunucu]"+ChatColor.RED+"Admin komutunu kullanmaya yetkiniz yok."));
                 return true;
             }
-
-
-
-
-
-
         }
 
+        //Yardım Alma Komutu (Helpop)
         if(cmd.getName().equalsIgnoreCase("yardim"))
         {
 
@@ -143,25 +123,15 @@ public class KomutListesi implements CommandExecutor {
                         on.sendMessage(tl(ChatColor.LIGHT_PURPLE + "[Yardım Talebi]"+ChatColor.YELLOW+ sender.getName()+ ChatColor.WHITE +": "+ s.toString()));
 
                     }
-
-
-
                 }
                 Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "[Yardım Talebi]"+ChatColor.YELLOW+ sender.getName()+ ChatColor.WHITE +": "+ s.toString());
             }
-
-
-
-
-
         }
 
-
-
+        //Kulağa Fısıldama
         if (cmd.getName().equalsIgnoreCase("kf"))
         {
             Player p = (Player) sender;
-
             try
             {
                 if (args.length > 1)
@@ -182,11 +152,8 @@ public class KomutListesi implements CommandExecutor {
 
                     if(target.getLocation().distance(playerLocation) <= blockDistance)
                     {
-
                         target.sendMessage(ChatColor.YELLOW + EventDosyasi.EventsClass.getKarakterAd(sender.getName())+" sana fısıldadı: "+ChatColor.DARK_GRAY + sm);
                         p.sendMessage(ChatColor.YELLOW + EventDosyasi.EventsClass.getKarakterAd(target.getName())+" isimli kişiye fısıldadınız: "+ChatColor.DARK_GRAY + sm);
-
-
                     }
                     else
                     {
@@ -195,40 +162,25 @@ public class KomutListesi implements CommandExecutor {
                     }
                     for(Player on : Bukkit.getOnlinePlayers())
                     {
-
-                        if(on.getLocation().distance(playerLocation) <= blockDistance2
-
-                        )
+                        if(on.getLocation().distance(playerLocation) <= blockDistance2)
                         {
                             on.sendMessage(ChatColor.BLUE+"[Fısıldama]: "+ ChatColor.GREEN + EventDosyasi.EventsClass.getKarakterAd(sender.getName())+", "+ChatColor.YELLOW+EventDosyasi.EventsClass.getKarakterAd(target.getName())+ChatColor.GOLD+ " isimli kişinin kulağına fısıldadı.");
                         }
-
                     }
-
-                    //  Location targetLocation = target.getPlayer().getLocation();
-
-
-
-
                 }
                 else
                 {
-
                     sender.sendMessage(tl(ChatColor.GOLD+"[Sunucu]"+ChatColor.RED + "Bir mesaj yazmalısınız. Kullanım ->"+ChatColor.WHITE+"/kf <oyuncu> <mesaj>"+ChatColor.RED+ " şeklindedir."));
                 }
-
             }
             catch(Exception ex)
             {
                 p.sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.YELLOW+"Oyuncu ismini doğru girdiğinizden emin olunuz.");
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Özel Mesaj Sistemi Hatası]: "+ChatColor.BLUE+ p.getName()+ChatColor.YELLOW+" isimli oyuncu /kf komutunu kullanırken hata yaptı.");
             }
-
-
-
         }
 
-
+        //Özel Mesaj
         if (cmd.getName().equalsIgnoreCase("mesaj"))
         {
             try
@@ -236,82 +188,56 @@ public class KomutListesi implements CommandExecutor {
                 Player p = (Player) sender;
                 if (args.length > 1)
                 {
-
                     Player target = Bukkit.getServer().getPlayer(args[0]);
                     StringBuilder sm = new StringBuilder();
-
-                    for (int i = 1; i < args.length; i++){
+                    for (int i = 1; i < args.length; i++)
+                    {
                         String arg = (args[i] + " ");
                         sm.append(arg);
                     }
-
                     p.sendMessage(ChatColor.GOLD+"["+ChatColor.DARK_BLUE+"Sen"+ChatColor.GOLD+" -> "+ChatColor.BLUE+target.getName()+ChatColor.GOLD+"]: "+ChatColor.WHITE+sm);
 
                     for(Player on : Bukkit.getOnlinePlayers())
                     {
-
                         if(on.getName().equals(target.getName()))
                         {
                             target.sendMessage(ChatColor.GOLD+"["+ChatColor.DARK_BLUE+p.getName()+ChatColor.GOLD+" -> "+ChatColor.BLUE+"Sen:"+ChatColor.GOLD+"]: "+ChatColor.WHITE+sm);
                         }
-
                     }
-
-                    //  Location targetLocation = target.getPlayer().getLocation();
-
-
-
-
                 }
                 else
                 {
-
                     sender.sendMessage(tl(ChatColor.GOLD+"[Sunucu]"+ChatColor.RED + "Bir mesaj yazmalısınız. Kullanım ->"+ChatColor.WHITE+"/mesaj <oyuncu> <mesaj>"+ChatColor.RED+ " şeklindedir."));
                 }
-
             }
             catch(Exception ex)
             {
                 sender.sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.YELLOW+"Lütfen oyuncu adını düzgün girdiğinizden emin olunuz. Kullanım /mesaj <kişi> <mesaj> şeklindedir.");
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Özel Mesaj Sisteminde Hata]: "+ChatColor.YELLOW+"Sistemde muhtemel bir NullException hatası oluştu. "+ChatColor.BLUE+"Komutu Kullanan Kişi: "+ChatColor.WHITE+sender.getName());
             }
-
-
-
         }
 
-
+        //Eşyaya isim verme
         if (cmd.getName().equalsIgnoreCase("isimver"))
         {
             Player p = (Player) sender;
-
             try
             {
-
                 if(p.isOp())
                 {
-
                     if (args.length == 0)
                     {
                         sender.sendMessage(tl(ChatColor.GOLD+"[Admin]"+ChatColor.RED + "Bir şey yazmalısınız. ->"+ChatColor.WHITE+"/isimver <isim>"+ChatColor.RED+ " şeklindedir. Örnek -> /isimver Hancer"));
-
                         return true;
                     }
-
                     StringBuilder s = new StringBuilder();
-
                     for (String arg : args)
                     {
                         s.append(arg);
                         s.append(" ");
-
-
                     }
                     s.deleteCharAt(s.lastIndexOf(" "));
-
-
-
-                    System.out.println("ISIM-"+s.toString()+"-ISIM");
+                    //System.out.println("ISIM-"+s.toString()+"-ISIM");
                     if(p.getInventory().getItemInHand() != null)
                     {
                         ItemStack item = p.getInventory().getItemInHand();
@@ -319,15 +245,13 @@ public class KomutListesi implements CommandExecutor {
                         meta.setDisplayName(s.toString());
                         item.setItemMeta(meta);
                         p.updateInventory();
-                        return true;
                     }
                     else
                     {
                         sender.sendMessage(tl(ChatColor.GOLD+"[Hata]"+ChatColor.RED+"item seç deli"));
-                        return true;
                     }
 
-
+                    return true;
                 }
                 else
                 {
@@ -339,30 +263,23 @@ public class KomutListesi implements CommandExecutor {
             {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.GREEN+"/isimver isimli komutta hata oluştu. Muhtemel hata elde herhangi bir eşya tutulmuyordu.");
             }
-
-
-
-
-
         }
 
+        //Iteme Açıklama Verme
         if (cmd.getName().equalsIgnoreCase("lorever"))
         {
             Player p = (Player) sender;
-
             if(p.isOp())
             {
-
                 if (args.length == 0)
                 {
                     sender.sendMessage(tl(ChatColor.GOLD+"[Admin]"+ChatColor.RED + "Bir şey yazmalısınız. ->"+ChatColor.WHITE+"/lorever <lore>"+ChatColor.RED+ " şeklindedir. Örnek -> /lorever Sivri Uclu bir Hancer"));
-
                     return true;
                 }
 
                 StringBuilder s = new StringBuilder();
-
-                for (String arg : args) {
+                for (String arg : args)
+                {
                     s.append(arg + " ");
                 }
 
@@ -375,47 +292,37 @@ public class KomutListesi implements CommandExecutor {
                     meta.setLore(Lore);
                     item.setItemMeta(meta);
                     p.updateInventory();
-                    return true;
                 }
                 else
                 {
                     sender.sendMessage(tl(ChatColor.GOLD+"[Hata]"+ChatColor.RED+"item seç deli"));
-                    return true;
                 }
 
-
+                return true;
             }
             else
             {
                 sender.sendMessage(tl(ChatColor.GOLD+"[Sunucu]"+ChatColor.RED+"Bu komutu kullanmaya yetkiniz yok."));
                 return true;
             }
-
-
-
         }
-//=======================================================================================================================================================================================================================
-//      /MASKE KOMUTU
-//=======================================================================================================================================================================================================================
+
+        //Maske Takma
         if (cmd.getName().equalsIgnoreCase("maske"))
         {
             Player p = (Player) sender;
-
             //    String oyunad = EventDosyasi.EventsClass.getOyunNick(p.getName());
             String listname = EventDosyasi.EventsClass.getKarakterAd(p.getName())+"("+p.getName()+")";
             //    String kisiad = EventDosyasi.EventsClass.getKarakterAd(p.getName());
-
-
-
             if(EventDosyasi.EventsClass.getMaskeDurum(p.getName()) == 0)
             {
-
                 p.sendMessage(ChatColor.GOLD + "[Bilgi]"+ ChatColor.BLUE + "Maske taktınız.");
-
-
-                try {
+                try
+                {
                     EventsClass.setMaskeDurum(p.getName(),1);
-                } catch (IOException e) {
+                }
+                catch (IOException e)
+                {
                     e.printStackTrace();
                 }
                 listname = "Maskeli Kişi";
@@ -423,42 +330,33 @@ public class KomutListesi implements CommandExecutor {
                 p.setDisplayName("Maskeli Kişi");
                 p.setCustomName("Maskeli Kişi");
                 MaskeAd = "Maskeli Kişi";
-
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN+"[Sunucu]: "+p.getName()+" isimli oyuncu /maske komutunu kullandı.");
             }
             else if(EventDosyasi.EventsClass.getMaskeDurum(p.getName()) == 1)
             {
-
-                try {
+                try
+                {
                     EventsClass.setMaskeDurum(p.getName(),0);
-                } catch (IOException e) {
+                }
+                catch (IOException e)
+                {
                     e.printStackTrace();
                 }
                 p.setDisplayName(listname);
                 p.setPlayerListName(listname);
                 p.setCustomName(listname);
-
                 p.sendMessage(ChatColor.GOLD + "[Bilgi]"+ ChatColor.BLUE + "Maskeyi çıkardınız.");
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN+"[Sunucu]: "+p.getName()+" isimli oyuncu /maske komutunu kullandı.");
-
-
             }
-
-
-
-
         }
-
         if (cmd.getName().equalsIgnoreCase("w"))
         {
-
             Player p = (Player) sender;
             if (args.length > 1)
             {
                 //retrieve the first argument as a player
                 Player target = Bukkit.getServer().getPlayer(args[0]);
                 StringBuilder sm = new StringBuilder();
-
                 //combine the arguments the player typed
                 for (int i = 1; i < args.length; i++){
                     String arg = (args[i] + " ");
@@ -466,16 +364,12 @@ public class KomutListesi implements CommandExecutor {
                 }
                 int blockDistance = 1;
                 int blockDistance2 = 10;
-
                 Location playerLocation = p.getPlayer().getLocation();
 
                 if(target.getLocation().distance(playerLocation) <= blockDistance)
                 {
-
                     target.sendMessage(ChatColor.YELLOW + EventDosyasi.EventsClass.getKarakterAd(sender.getName())+" sana fısıldadı: "+ChatColor.DARK_GRAY + sm);
                     p.sendMessage(ChatColor.YELLOW + EventDosyasi.EventsClass.getKarakterAd(target.getName())+" isimli kişiye fısıldadınız: "+ChatColor.DARK_GRAY + sm);
-
-
                 }
                 else
                 {
@@ -484,34 +378,20 @@ public class KomutListesi implements CommandExecutor {
                 }
                 for(Player on : Bukkit.getOnlinePlayers())
                 {
-
                     if(on.getLocation().distance(playerLocation) <= blockDistance2)
                     {
                         on.sendMessage(ChatColor.BLUE+"[Fısıldama]: "+ ChatColor.GREEN + EventDosyasi.EventsClass.getKarakterAd(sender.getName())+", "+ChatColor.YELLOW+EventDosyasi.EventsClass.getKarakterAd(target.getName())+ChatColor.GOLD+ " isimli kişinin kulağına fısıldadı.");
                     }
-
                 }
-
-                //  Location targetLocation = target.getPlayer().getLocation();
-
-
-
-
             }
             else
             {
-
                 sender.sendMessage(tl(ChatColor.GOLD+"[Sunucu]"+ChatColor.RED + "Bir mesaj yazmalısınız. Kullanım ->"+ChatColor.WHITE+"/kf <oyuncu> <mesaj>"+ChatColor.RED+ " şeklindedir."));
             }
-
-
-
-
         }
 
         if(cmd.getName().equalsIgnoreCase("kk") && sender instanceof Player)
         {
-
             Player p = (Player) sender;
 
             try
@@ -523,15 +403,15 @@ public class KomutListesi implements CommandExecutor {
 
                     return true;
                 }
-                StringBuilder s = new StringBuilder();
 
+                StringBuilder s = new StringBuilder();
                 for (String arg : args) {
+
                     s.append(arg + " ");
                 }
                 String rawmessage = s.toString();
                 int blockDistance = 10;
                 Location playerLocation = p.getPlayer().getLocation();
-
                 for(Player ab : Bukkit.getOnlinePlayers())
                 {
                     if(ab.getLocation().distance(playerLocation) <= blockDistance)
@@ -547,13 +427,10 @@ public class KomutListesi implements CommandExecutor {
             }
         }
 
-//=======================================================================================================================================================================================================================
-//      /ME KOMUTU
-//=======================================================================================================================================================================================================================
+        // /me Komutu
         if(cmd.getName().equalsIgnoreCase("me") && sender instanceof Player)
         {
             Player p = (Player) sender;
-
             try
             {
                 String karakterad = EventsClass.getKarakterAd(p.getPlayer().getName());
@@ -564,18 +441,12 @@ public class KomutListesi implements CommandExecutor {
                     return true;
                 }
                 StringBuilder s = new StringBuilder();
-
                 for (String arg : args) {
                     s.append(arg + " ");
                 }
-
                 String rawmessage = s.toString();
-
-
-
                 int blockDistance = 10;
                 Location playerLocation = p.getPlayer().getLocation();
-
                 if(EventDosyasi.EventsClass.getMaskeDurum(sender.getName()) == 1)
                 {
                     for(Player ab : Bukkit.getOnlinePlayers())
@@ -585,7 +456,6 @@ public class KomutListesi implements CommandExecutor {
                             ab.sendMessage(tl(ChatColor.GOLD + "[Hareket]: " + ChatColor.RED + "Maskeli Kişi"+ " " +rawmessage));
                         }
                     }
-
                 }
                 else
                 {
@@ -593,32 +463,22 @@ public class KomutListesi implements CommandExecutor {
                     {
                         if(ab.getLocation().distance(playerLocation) <= blockDistance)
                         {
-
                             ab.sendMessage(tl(ChatColor.GOLD + "[Hareket]: " + ChatColor.RED + karakterad+ " " +rawmessage));
-
                         }
                     }
-
                 }
-
-
             }
             catch (Exception cd)
             {
                 System.out.println(cd);
                 cd.printStackTrace();
             }
-
-
-
-
         }
 
+        // OOC Komutu
         if(cmd.getName().equalsIgnoreCase("b") && sender instanceof Player)
         {
-
             Player p = (Player) sender;
-
             try
             {
                 String karakterad = EventsClass.getKarakterAd(p.getPlayer().getName());
@@ -629,14 +489,13 @@ public class KomutListesi implements CommandExecutor {
                     return true;
                 }
                 StringBuilder s = new StringBuilder();
-
-                for (String arg : args) {
+                for (String arg : args)
+                {
                     s.append(arg + " ");
                 }
                 String rawmessage = s.toString();
                 int blockDistance = 10;
                 Location playerLocation = p.getPlayer().getLocation();
-
                 for(Player ab : Bukkit.getOnlinePlayers())
                 {
                     if(ab.getLocation().distance(playerLocation) <= blockDistance)
@@ -652,11 +511,10 @@ public class KomutListesi implements CommandExecutor {
             }
         }
 
+        //IRK Dili Kodu
         if(cmd.getName().equalsIgnoreCase("dil") && sender instanceof Player)
         {
-
             Player p = (Player) sender;
-
             try
             {
                 String karakterad = EventsClass.getKarakterAd(p.getPlayer().getName());
@@ -691,34 +549,24 @@ public class KomutListesi implements CommandExecutor {
             }
         }
 
+        //Meslek Seçme
         if(cmd.getName().equalsIgnoreCase("meslek") && sender instanceof Player)
         {
-
             Player p = (Player) sender;
-
             try
             {
-                //	  String karakterad = EventsClass.getKarakterAd(p.getPlayer().getName());
                 if (args.length == 0)
                 {
                     sender.sendMessage(tl(ChatColor.GOLD+"[Sunucu]"+ChatColor.RED + "Bir meslek seçmelisiniz."+ChatColor.WHITE+"/meslek <meslekadı>"+ChatColor.RED+ " şeklindedir."));
                     sender.sendMessage(tl(ChatColor.GOLD+"[Sunucu]"+ChatColor.YELLOW + "Aktif Meslekler -> Madenci,Marangoz,Demirci,Çiftçi,Şifacı[Pasif]"));
                     return true;
                 }
-
                 if(EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("yok"))
                 {
                     StringBuilder s = new StringBuilder();
-
                     for (String arg : args) {
                         s.append(arg + " ");
                     }
-
-                    //kuvvet,bilgelik,çeviklik,dayanıklılık,zeka,karizma
-                    //	 int blockDistance = 10;
-                    //	 Location playerLocation = p.getPlayer().getLocation();
-
-
 
                     if(args[0].equalsIgnoreCase("Madenci") || args[0].equalsIgnoreCase("madenci") )
                     {
@@ -764,15 +612,11 @@ public class KomutListesi implements CommandExecutor {
                         sender.sendMessage(tl(ChatColor.GOLD+"[Sunucu]"+ChatColor.YELLOW + "Böyle bir meslek yok."));
                         return true;
                     }
-
                 }
                 else
                 {
                     sender.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.YELLOW+"Zaten meslek seçmişsiniz.");
                 }
-
-
-
             }
             catch (Exception cd)
             {
@@ -781,15 +625,13 @@ public class KomutListesi implements CommandExecutor {
             }
         }
 
+        //Yavaş Yürüme Komutu
         if(cmd.getName().equalsIgnoreCase("yuru") && sender instanceof Player)
         {
-
             Player p = (Player) sender;
-
             try
             {
                 float speed = p.getWalkSpeed();
-                System.out.println(speed);
                 if(speed > 0.15 && speed < 0.50)
                 {
                     sender.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.YELLOW+"Yürümeye başladınız.");
@@ -807,7 +649,7 @@ public class KomutListesi implements CommandExecutor {
             }
         }
 
-
+        // OOC Komutu
         if(cmd.getName().equalsIgnoreCase("ooc") && sender instanceof Player)
         {
 
@@ -846,7 +688,7 @@ public class KomutListesi implements CommandExecutor {
             }
         }
 
-
+        //CK Etme Komutu
         if(cmd.getName().equalsIgnoreCase("ck") && sender instanceof Player)
         {
 
@@ -895,10 +737,7 @@ public class KomutListesi implements CommandExecutor {
             {
                 p.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.YELLOW+"Böyle bir oyuncu yok.");
             }
-
-
         }
-
 
 
 
@@ -2104,7 +1943,7 @@ public class KomutListesi implements CommandExecutor {
                         if (ab.getLocation().distance(playerLocation) <= blockDistance) {
                             ab.sendMessage(tl(ChatColor.GOLD +"("+ p.getName() +")"+ChatColor.YELLOW + karakterad + ChatColor.GREEN + " (Şans)" + ChatColor.YELLOW + " attı: " + ChatColor.GREEN + normalzar + ChatColor.YELLOW + " geldi."));
 
-                                    
+
                         }
 
                     }
@@ -2134,7 +1973,7 @@ public class KomutListesi implements CommandExecutor {
                         return true;
                     }
 
-                  
+
                 }
                 String[] splittentext = args[0].split("d", 2);
                 int n1 = Integer.parseInt(splittentext[0]);

@@ -192,8 +192,8 @@ public class EventsClass implements Listener
     Ölünce CK olma
      */
     @EventHandler
-    public void onEntityDeath(EntityDeathEvent event) {
-
+    public void onEntityDeath(EntityDeathEvent event)
+    {
         if (event instanceof PlayerDeathEvent)
         {
             Player player = (Player) event.getEntity();
@@ -262,37 +262,36 @@ public class EventsClass implements Listener
                     e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),new ItemStack(Material.BEETROOT_SEEDS, 1));
                     p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW+ "Otun içinden tohum buldun");
                 }
-                if (sans >= 0.03135 && sans <= 0.04635)
+                else if (sans >= 0.03135 && sans <= 0.04635)
                 {
                     e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),new ItemStack(Material.MELON_SEEDS, 1));
                     p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW+ "Otun içinden tohum buldun");
                 }
-                if (sans >= 0.02134 && sans <= 0.03134)
+                else if (sans >= 0.02134 && sans <= 0.03134)
                 {
                     e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),new ItemStack(Material.WHEAT_SEEDS, 1));
                     p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW+ "Otun içinden tohum buldun");
                 }
-                if (sans >= 0.01633 && sans <= 0.02133)
+                else if (sans >= 0.01633 && sans <= 0.02133)
                 {
                     e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),new ItemStack(Material.PUMPKIN_SEEDS, 1));
                     p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW+ "Otun içinden tohum buldun");
                 }
-                if (sans >= 0.01132 && sans <= 0.01632)
+                else if (sans >= 0.01132 && sans <= 0.01632)
                 {
                     e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),new ItemStack(Material.POISONOUS_POTATO, 2));
                     p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW+ "Otun içinden hafif yeşilleşmiş bir patates buldun.");
                 }
-                if (sans >= 0.00380 && sans <= 0.00630)
+                else if (sans >= 0.00380 && sans <= 0.00630)
                 {
                     e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),new ItemStack(Material.SPIDER_SPAWN_EGG, 1));
                     p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW+ "Otun içindeki örümcek yuvasından bir örümcek yumurtası çıkardın.");
                 }
-                if (sans >= 0 && sans < 0.0020)
+                else if (sans >= 0 && sans < 0.0020)
                 {
                     e.getBlock().getWorld().dropItem(e.getBlock().getLocation(), new ItemStack(Material.BONE, 1));
                     p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW + "Otun içinden fosilleşmiş bir kemik buldun.");
                 }
-
             }
         }
     }
