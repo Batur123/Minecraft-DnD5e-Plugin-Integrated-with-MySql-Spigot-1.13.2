@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Objects;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -43,8 +42,13 @@ import org.bukkit.potion.PotionEffectType;
 import AnaDizinDosyasi.BaturPlugin;
 import Komutlar.KomutListesi;
 
-public class EventsClass implements Listener {
+/*
+Hata Kodları:
 
+
+ */
+public class EventsClass implements Listener
+{
 
     public String url = "jdbc:mysql://localhost:3306/karakter?autoReconnect=true&useSSL=true";
     public String user = "root";
@@ -52,72 +56,69 @@ public class EventsClass implements Listener {
     public String ForumAdi,OyunAdi,KarakterAdi,Sifre,Yas,Meslek,MadenciXP1,MadenciSeviye1,Irk,CK_Durum,oyuncumadencixp, oyuncudemircixp, oyuncuavcixp, oyuncuoduncuxp,oyuncumadencisv, oyuncudemircisv, oyuncuavcisv, oyuncuoduncusv;
     public int StatTemp,MeslekXP,MeslekSV,guc,bilgelik,atiklik,buyu,dayaniklilik,karizma,BasvuruDurum;
 
+    /*
+    Oyuncu Hareket Eventi
+     */
     @EventHandler
     public void onMove(PlayerMoveEvent e)
     {
         try
         {
             Player p = e.getPlayer();
-
             if (getKontrol(Objects.requireNonNull(p.getPlayer()).getName()).equals("hayir"))
             {
                 p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 999999999, 999999999));
                 p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 99999999, 999999999));
-
                 e.setCancelled(true);
-            } else if (getKontrol(p.getPlayer().getName()).equals("evet"))
+            }
+            else if (getKontrol(p.getPlayer().getName()).equals("evet"))
             {
                 p.getActivePotionEffects().clear();
             }
-
-
         }
         catch(Exception ex)
         {
             OyuncuKickle(e.getPlayer(), "Sunucu güvenlik koruması aktif edildi. Sistemler kendini korumak için sizi oyundan attı. Batur123 ile iletişime geçin.");
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Hata]: onMove"+e.getPlayer().getName());
         }
-
-
     }
 
+    /*
+    Anvil Kullanımını Kapatma
+     */
     @EventHandler
     public void Anvil(InventoryOpenEvent e)
     {
-        if (e.getInventory().getType() == InventoryType.ANVIL) {
+        if (e.getInventory().getType() == InventoryType.ANVIL)
+        {
             e.setCancelled(true);
         }
     }
 
     /*
-     * public void AclikKontrolu(PlayerMoveEvent e) { Player p = e.getPlayer(); }
+    Hedef oyuncuya sağ tıklayınca bilgilerini gösterme.
      */
-
     @SuppressWarnings("deprecation")
     @EventHandler
     public void onPlayerInteract(PlayerInteractEntityEvent event1)
     {
-
         try
         {
             Player player = event1.getPlayer();
             Entity entity = event1.getRightClicked();
-            if (entity instanceof Player) {
-
+            if (entity instanceof Player)
+            {
                 if (event1.getHand() == EquipmentSlot.HAND)
                 {
                     Player clicked = (Player) entity;
-
                     if (event1.getPlayer().isOp())
                     {
-
-                        int guc = Integer.valueOf(EventsClass.getzarGuc(Objects.requireNonNull(clicked.getPlayer()).getName()));
-                        int atiklik  = Integer.valueOf(EventsClass.getzarAtiklik(clicked.getPlayer().getName()));
-                        int dayaniklilik  = Integer.valueOf(EventsClass.getzarDayaniklilik(clicked.getPlayer().getName()));
-                        int buyu  = Integer.valueOf(EventsClass.getzarBuyu(clicked.getPlayer().getName()));
-                        int bilgelik  = Integer.valueOf(EventsClass.getzarBilgelik(clicked.getPlayer().getName()));
-                        int karizma  = Integer.valueOf(EventsClass.getzarKarizma(clicked.getPlayer().getName()));
-
+                        int guc = Integer.parseInt(EventsClass.getzarGuc(Objects.requireNonNull(clicked.getPlayer()).getName()));
+                        int atiklik  = Integer.parseInt(EventsClass.getzarAtiklik(clicked.getPlayer().getName()));
+                        int dayaniklilik  = Integer.parseInt(EventsClass.getzarDayaniklilik(clicked.getPlayer().getName()));
+                        int buyu  = Integer.parseInt(EventsClass.getzarBuyu(clicked.getPlayer().getName()));
+                        int bilgelik  = Integer.parseInt(EventsClass.getzarBilgelik(clicked.getPlayer().getName()));
+                        int karizma  = Integer.parseInt(EventsClass.getzarKarizma(clicked.getPlayer().getName()));
 
                         int bonuskuvvet = EventsClass.BonusKuvvet(EventsClass.GetIrk(clicked.getPlayer().getName()));
                         int bonusceviklik = EventsClass.BonusCeviklik(EventsClass.GetIrk(clicked.getPlayer().getName()));
@@ -148,12 +149,13 @@ public class EventsClass implements Listener {
                         player.sendMessage(ChatColor.GREEN + "           [Görünüş]");
                         player.sendMessage(ChatColor.YELLOW + getGorunus(clicked.getName()));
                         player.sendMessage(ChatColor.GREEN + "_______________________________");
-                    } else {
+                    }
+                    else
+                    {
                         player.sendMessage(ChatColor.YELLOW + "                       " + getKarakterAd(clicked.getName()) + "(" + clicked.getName() + ")");
                         player.sendMessage(ChatColor.YELLOW + "_______________________[Görünüş]__________________________");
                         player.sendMessage(ChatColor.WHITE + getGorunus(clicked.getName()));
                     }
-
                 }
             }
         }
@@ -161,40 +163,11 @@ public class EventsClass implements Listener {
         {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Hata]: onPlayerInteract event 1 Satır158"+event1.getPlayer().getName());
         }
-
-
     }
 
-
-
-/*	@EventHandler
-	public void onInteract(PlayerInteractEvent event) {
-		if (GirdiKontrol = false) {
-			event.setCancelled(true);
-		} else {
-			Action action = event.getAction();
-			Player player = event.getPlayer();
-			Block block = event.getClickedBlock();
-
-			if (action.equals(Action.LEFT_CLICK_BLOCK)) {
-
-				if (block.getType().equals(Material.EMERALD_BLOCK)) {
-					if (player.getHealth() != 20.0) {
-						player.setHealth(player.getHealth() + 1.0);
-						player.sendMessage(ChatColor.RED + "Oyun:" + ChatColor.BLUE + "Bandaj bastï¿½nï¿½z. Mevcut canï¿½nï¿½z:"
-								+ (int) player.getHealth());
-
-					} else {
-						player.sendMessage(ChatColor.RED + "Oyun:" + ChatColor.BLUE
-								+ "Tamamen saï¿½lï¿½ksï¿½nï¿½z. Daha fazla bandaj basamazsï¿½nï¿½z.");
-					}
-
-				}
-			}
-		}
-
-	} */
-
+    /*
+    Can Yenilenmesini Kapatır
+     */
     @EventHandler
     public void CanYenilenmesiKapatma(EntityRegainHealthEvent e) {
 
@@ -209,146 +182,130 @@ public class EventsClass implements Listener {
                 }
                 e.setCancelled(true);
             }
-
-
-        } catch(Exception ex) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED +
-                    "[Hata]: CanYenilenmesiKapatma'da hata oluştu. Satıt 178"); }
-
-
+        }
+        catch(Exception ex)
+        {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[Hata]: #01"); }
     }
 
-
+    /*
+    Ölünce CK olma
+     */
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
 
-        if (event instanceof PlayerDeathEvent) {
-
+        if (event instanceof PlayerDeathEvent)
+        {
             Player player = (Player) event.getEntity();
-
             player.getInventory().clear();
-            OyuncuKickle(player, ChatColor.GOLD + "[Flowing Tears] " + ChatColor.RED
-                    + "Karakteriniz öldü. Lütfen karakter panelinden karakterinizi tekrardan ayarlayınız.");
-
+            OyuncuKickle(player, ChatColor.GOLD + "[Flowing Tears] " + ChatColor.RED + "Karakteriniz öldü. Lütfen karakter panelinden karakterinizi tekrardan ayarlayınız.");
             Connection connect = null;
             PreparedStatement pre = null;
-
-            try {
-
+            try
+            {
                 Class.forName("com.mysql.jdbc.Driver");
-                connect = DriverManager
-                        .getConnection("jdbc:mysql://localhost:3306/karakter" + "?user=root&password=test");
-
+                connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/karakter" + "?user=root&password=test");
                 String sql = "UPDATE karakter " + "SET KarakterAdi = ? , " + "CK_Durum = ? , Meslek = ? WHERE OyunAdi = ? ";
-
                 pre = connect.prepareStatement(sql);
                 pre.setString(1, getKarakterAd(Objects.requireNonNull(player.getPlayer()).getName()));
                 pre.setInt(2, 1);
                 pre.setString(3, "yok");
                 pre.setString(4, player.getPlayer().getName());
-
                 pre.executeUpdate();
-
-                Bukkit.getConsoleSender()
-                        .sendMessage(ChatColor.GREEN + "[Bilgi]: " + ChatColor.RED + player.getPlayer().getName()
-                                + ChatColor.GREEN + " isimli kişi CK oldu. Güncelleme işlemi yapıldı.");
-
-            } catch (Exception d) {
-
+                Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Bilgi]: " + ChatColor.RED + player.getPlayer().getName()+ ChatColor.GREEN + " isimli kişi CK oldu. Güncelleme işlemi yapıldı.");
+            }
+            catch (Exception d)
+            {
                 d.printStackTrace();
             }
 
-            try {
-                if (connect != null) {
+            try
+            {
+                if (connect != null)
+                {
                     pre.close();
                     connect.close();
                 }
-            } catch (SQLException s) {
-
+            }
+            catch (SQLException s)
+            {
                 s.printStackTrace();
             }
         }
     }
 
+    /*
+    Otları kırdığımız zaman belirli eşyalar düşürme
+     */
     @EventHandler
     public void OtArastirmaSistemi(BlockBreakEvent e)
     {
-
         Player p = e.getPlayer();
-
         if (getKontrol(p.getPlayer().getName()).equals("hayir"))
         {
             e.setCancelled(true);
-        } else if (getKontrol(p.getPlayer().getName()).equals("evet")) {
-
-            if (e.getBlock().getType() == Material.GRASS || e.getBlock().getType() == Material.TALL_GRASS
+        }
+        else if (getKontrol(p.getPlayer().getName()).equals("evet"))
+        {
+            if
+            (
+                    e.getBlock().getType() == Material.GRASS
+                    || e.getBlock().getType() == Material.TALL_GRASS
                     || e.getBlock().getType() == Material.FERN || e.getBlock().getType() == Material.LARGE_FERN
                     || e.getBlock().getType() == Material.SEAGRASS
-                    || e.getBlock().getType() == Material.TALL_SEAGRASS) {
-
+                    || e.getBlock().getType() == Material.TALL_SEAGRASS
+            )
+            {
                 double sans = Math.random();
-
-                if (sans >= 0.04636 && sans <= 0.07136) // coal
+                if (sans >= 0.04636 && sans <= 0.07136)
                 {
-                    e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),
-                            new ItemStack(Material.BEETROOT_SEEDS, 1));
-                    p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW
-                            + "Oyun içinden tohum buldun");
-
+                    e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),new ItemStack(Material.BEETROOT_SEEDS, 1));
+                    p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW+ "Otun içinden tohum buldun");
                 }
-                if (sans >= 0.03135 && sans <= 0.04635) // iron
+                if (sans >= 0.03135 && sans <= 0.04635)
                 {
-                    e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),
-                            new ItemStack(Material.MELON_SEEDS, 1));
-                    p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW
-                            + "Oyun içinden tohum buldun");
+                    e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),new ItemStack(Material.MELON_SEEDS, 1));
+                    p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW+ "Otun içinden tohum buldun");
                 }
-                if (sans >= 0.02134 && sans <= 0.03134) // gold
+                if (sans >= 0.02134 && sans <= 0.03134)
                 {
-                    e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),
-                            new ItemStack(Material.WHEAT_SEEDS, 1));
-                    p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW
-                            + "Oyun içinden tohum buldun");
+                    e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),new ItemStack(Material.WHEAT_SEEDS, 1));
+                    p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW+ "Otun içinden tohum buldun");
                 }
-                if (sans >= 0.01633 && sans <= 0.02133) // diamond
+                if (sans >= 0.01633 && sans <= 0.02133)
                 {
-                    e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),
-                            new ItemStack(Material.PUMPKIN_SEEDS, 1));
-                    p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW
-                            + "Oyun içinden tohum buldun");
-
+                    e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),new ItemStack(Material.PUMPKIN_SEEDS, 1));
+                    p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW+ "Otun içinden tohum buldun");
                 }
-                if (sans >= 0.01132 && sans <= 0.01632) // redstone
+                if (sans >= 0.01132 && sans <= 0.01632)
                 {
-                    e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),
-                            new ItemStack(Material.POISONOUS_POTATO, 2));
-                    p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW
-                            + "Otun içinden hafif yeşilleşmiş bir patates buldun.");
+                    e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),new ItemStack(Material.POISONOUS_POTATO, 2));
+                    p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW+ "Otun içinden hafif yeşilleşmiş bir patates buldun.");
                 }
-                if (sans >= 0.00380 && sans <= 0.00630) // emerald
+                if (sans >= 0.00380 && sans <= 0.00630)
                 {
-
-                    e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),
-                            new ItemStack(Material.SPIDER_SPAWN_EGG, 1));
-                    p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW
-                            + "Otun içindeki örümcek yuvasından bir örümcek yumurtası çıkardın.");
+                    e.getBlock().getWorld().dropItem(e.getBlock().getLocation(),new ItemStack(Material.SPIDER_SPAWN_EGG, 1));
+                    p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW+ "Otun içindeki örümcek yuvasından bir örümcek yumurtası çıkardın.");
                 }
-                if (sans >= 0 && sans < 0.0020) // ï¿½ok garip bir taï¿½
+                if (sans >= 0 && sans < 0.0020)
                 {
                     e.getBlock().getWorld().dropItem(e.getBlock().getLocation(), new ItemStack(Material.BONE, 1));
-                    p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW + "Fosilleşmiş bir kemik buldun.");
+                    p.sendMessage(ChatColor.BLUE + "[Bilgi]: " + ChatColor.YELLOW + "Otun içinden fosilleşmiş bir kemik buldun.");
                 }
 
             }
         }
     }
 
+    /*
+    Balık Tutmayı engelleme
+     */
     @EventHandler
     public void BalikTutma(PlayerFishEvent e)
     {
         try
         {
-            if(e.getCaught().getType() != null)
+            if(Objects.requireNonNull(e.getCaught()).getType() != null)
             {
                 e.setCancelled(true);
             }
@@ -362,6 +319,9 @@ public class EventsClass implements Listener {
     }
 
 
+    /*
+    Madencilik
+     */
     @SuppressWarnings("deprecation")
     @EventHandler
     public void Madencilik(BlockBreakEvent e) throws IOException {
@@ -469,26 +429,31 @@ public class EventsClass implements Listener {
 
                         // Block Kï¿½rdï¿½kï¿½a Madenci XP'yi arttï¿½rma
 
-                        if (getMeslekXP(e.getPlayer().getName()).equals("3200")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Tebrikler! Damarlarï¿½nda akan o maden coï¿½kusunu hissedebiliyorsun. ");
-                            p.sendMessage(ChatColor.YELLOW + "(2.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 2);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("9600")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Tebrikler! Kazdï¿½ï¿½ï¿½n madenlerin seni daha fazla gï¿½ï¿½lï¿½ yaptï¿½ï¿½ï¿½nï¿½ hissetmeye baï¿½ladï¿½n. ");
-                            p.sendMessage(ChatColor.YELLOW + "(3.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 3);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("19200")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Etrafï¿½nda garip sesler duymaya baï¿½lï¿½yorsun. Hangi taï¿½ta hangi maden olduï¿½unu gï¿½rebilecek kadar gï¿½ï¿½lendin.");
-                            p.sendMessage(ChatColor.YELLOW + "(4.Seviye Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 4);
-                        } else if (getMeslekXP(e.getPlayer().getName()).equals("32000")) {
-                            p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
-                                    + "Karanlï¿½ï¿½ï¿½n gï¿½cï¿½ iï¿½ine doï¿½ru ï¿½ekiliyor. Artï¿½k o kadar ï¿½ok maden iï¿½inde ustalaï¿½tï¿½n ki karanlï¿½kta ï¿½nï¿½nï¿½ gï¿½rebiliyorsun!");
-                            p.sendMessage(ChatColor.LIGHT_PURPLE + "(Efsanevi Madenci Oldun)");
-                            setMeslekSeviye(e.getPlayer().getName(), 5);
+                        switch (getMeslekXP(e.getPlayer().getName())) {
+                            case "3200":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Tebrikler! Damarlarï¿½nda akan o maden coï¿½kusunu hissedebiliyorsun. ");
+                                p.sendMessage(ChatColor.YELLOW + "(2.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 2);
+                                break;
+                            case "9600":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Tebrikler! Kazdï¿½ï¿½ï¿½n madenlerin seni daha fazla gï¿½ï¿½lï¿½ yaptï¿½ï¿½ï¿½nï¿½ hissetmeye baï¿½ladï¿½n. ");
+                                p.sendMessage(ChatColor.YELLOW + "(3.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 3);
+                                break;
+                            case "19200":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Etrafï¿½nda garip sesler duymaya baï¿½lï¿½yorsun. Hangi taï¿½ta hangi maden olduï¿½unu gï¿½rebilecek kadar gï¿½ï¿½lendin.");
+                                p.sendMessage(ChatColor.YELLOW + "(4.Seviye Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 4);
+                                break;
+                            case "32000":
+                                p.sendMessage(ChatColor.GOLD + "[Bilgi]: " + ChatColor.RED
+                                        + "Karanlï¿½ï¿½ï¿½n gï¿½cï¿½ iï¿½ine doï¿½ru ï¿½ekiliyor. Artï¿½k o kadar ï¿½ok maden iï¿½inde ustalaï¿½tï¿½n ki karanlï¿½kta ï¿½nï¿½nï¿½ gï¿½rebiliyorsun!");
+                                p.sendMessage(ChatColor.LIGHT_PURPLE + "(Efsanevi Madenci Oldun)");
+                                setMeslekSeviye(e.getPlayer().getName(), 5);
+                                break;
                         }
 
                     }
@@ -499,16 +464,12 @@ public class EventsClass implements Listener {
                             || e.getBlock().getType() == Material.REDSTONE_ORE
 
                     ) {
-                        if(EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Madenci"))
-                        {
-
-                        }
-                        else
+                        if(!EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Madenci"))
                         {
                             e.setCancelled(true);
                             p.sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.YELLOW+"Mesleï¿½iniz madenci deï¿½il!");
-
                         }
+
                         double sans = Math.random();
 
                         if (e.getBlock().getType() == Material.COAL_ORE && sans >= 0.4 && sans <= 0.8) // coal
@@ -641,22 +602,27 @@ public class EventsClass implements Listener {
 
                 } else if (MadenciSeviyeInt1 == 2) {
 
-                    if (e.getBlock().getType() == Material.STONE || e.getBlock().getType() == Material.COAL_ORE
-                            || e.getBlock().getType() == Material.DIAMOND_ORE || e.getBlock().getType() == Material.IRON_ORE
-                            || e.getBlock().getType() == Material.EMERALD_ORE || e.getBlock().getType() == Material.GOLD_ORE
+                    if
+                    (
+                            e.getBlock().getType() == Material.STONE
+                            || e.getBlock().getType() == Material.COAL_ORE
+                            || e.getBlock().getType() == Material.DIAMOND_ORE
+                            || e.getBlock().getType() == Material.IRON_ORE
+                            || e.getBlock().getType() == Material.EMERALD_ORE
+                            || e.getBlock().getType() == Material.GOLD_ORE
                             || e.getBlock().getType() == Material.LAPIS_ORE
-                            || e.getBlock().getType() == Material.REDSTONE_ORE || e.getBlock().getType() == Material.GRANITE
-                            || e.getBlock().getType() == Material.ANDESITE || e.getBlock().getType() == Material.DIORITE) {
-                        if(EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Madenci"))
-                        {
-
-                        }
-                        else
+                            || e.getBlock().getType() == Material.REDSTONE_ORE
+                            || e.getBlock().getType() == Material.GRANITE
+                            || e.getBlock().getType() == Material.ANDESITE
+                            || e.getBlock().getType() == Material.DIORITE
+                    )
+                    {
+                        if(!EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Madenci"))
                         {
                             e.setCancelled(true);
-                            p.sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.YELLOW+"Mesleï¿½iniz madenci deï¿½il!");
-
+                            p.sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.YELLOW+"Mesleğiniz madenci değil!");
                         }
+
 
                         if (p.getInventory().getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)
                                 || p.getInventory().getItemInHand().getType().equals(Material.GOLDEN_PICKAXE)
@@ -1657,47 +1623,41 @@ public class EventsClass implements Listener {
 
     }
 
-
-
-
+    /*
+    Silah Hariç Basit Demirci Eşyalarının Yapımını Demirci Olmayanlara Engelleme
+     */
     @EventHandler
     public void DemirciBasitCraftlar(CraftItemEvent e)
     {
         Player p = (Player) e.getWhoClicked();
         try
         {
-
-            if(
+            if
+            (
                     e.getRecipe().getResult().getType() == Material.IRON_BLOCK ||
-                            e.getRecipe().getResult().getType() == Material.IRON_BARS ||
-                            e.getRecipe().getResult().getType() == Material.COMPASS ||
-                            e.getRecipe().getResult().getType() == Material.CLOCK ||
-                            e.getRecipe().getResult().getType() == Material.IRON_TRAPDOOR ||
-                            e.getRecipe().getResult().getType() == Material.IRON_DOOR
-
+                    e.getRecipe().getResult().getType() == Material.IRON_BARS ||
+                    e.getRecipe().getResult().getType() == Material.COMPASS ||
+                    e.getRecipe().getResult().getType() == Material.CLOCK ||
+                    e.getRecipe().getResult().getType() == Material.IRON_TRAPDOOR ||
+                    e.getRecipe().getResult().getType() == Material.IRON_DOOR
             )
             {
-
                 if(!EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Demirci"))
                 {
                     e.setCancelled(true);
                     p.sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.YELLOW+"Mesleğiniz demirci değil!");
                 }
-
-
-
             }
-
-
         }
         catch(Exception ex)
         {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Hata](Konum Demirci)");
         }
-
-
-
     }
+
+    /*
+    Odunculuk
+     */
     @EventHandler public void Odunculuk(CraftItemEvent e)
     {
 
@@ -1746,7 +1706,7 @@ public class EventsClass implements Listener {
                 if(EventDosyasi.EventsClass.getMeslek(p.getPlayer().getName()).equals("Oduncu"))
                 {
                     StatTemp = 0;
-                    StatTemp = Integer.valueOf(EventDosyasi.EventsClass.getMeslekXP(p.getName()));
+                    StatTemp = Integer.parseInt(EventDosyasi.EventsClass.getMeslekXP(p.getName()));
 
                     StatTemp = StatTemp + 1;
                     EventDosyasi.EventsClass.setMeslekXP(p.getName(),StatTemp);
@@ -1775,16 +1735,17 @@ public class EventsClass implements Listener {
     }
 
 
-
+    /*
+    Yasaklı blokların kullanımını kaldırma
+     */
     @EventHandler
     public void onPlace(BlockPlaceEvent event)
     {
-
         try
         {
             Player p = event.getPlayer();
-
-            if (getKontrol(p.getPlayer().getName()).equals("hayir")) {
+            if (getKontrol(p.getPlayer().getName()).equals("hayir"))
+            {
                 event.setCancelled(true);
             }
 
@@ -1793,28 +1754,20 @@ public class EventsClass implements Listener {
 
             if (block.getType().equals(Material.TNT) || event.getBlockPlaced().getType().equals(Material.LAVA))
             {
-
                 event.setCancelled(true);
-
-                OyuncuKickle(player,
-                        ChatColor.BLUE + "Sunucudan atıldınız. \n" + ChatColor.GOLD + "[Sunucu]: " + ChatColor.RED
-                                + "Bu bloğu kullanmanız yasaktır.. \n" + ChatColor.GOLD + "Kullandığınız Blok: "
-                                + ChatColor.RED + block.getType().toString());
+                OyuncuKickle(player,ChatColor.GOLD + "[Flowing-Tears]: " + ChatColor.RED+ "Bu bloğu kullanmanız yasaktır..");
             }
         }
         catch(Exception ex)
         {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Hata](onPlace): "+event.getPlayer().getName());
         }
-
-
-
-
-
     }
 
+    /*
     @EventHandler
-    public void SutIcme(PlayerItemConsumeEvent e) {
+    public void SutIcme(PlayerItemConsumeEvent e)
+    {
 
         Player p = e.getPlayer();
         if (e.getItem().getType().equals(Material.MILK_BUCKET)) {
@@ -1823,6 +1776,8 @@ public class EventsClass implements Listener {
         }
 
     }
+     */
+
 
     /*
      * @EventHandler public void Sakatlanma(PlayerMoveEvent e) { Player p =
@@ -1844,14 +1799,17 @@ public class EventsClass implements Listener {
      *
      */
 
+    /*
+    Yerden item almak için SHIFT basmak gerekiyor.
+     */
     @EventHandler
     public void ItemAlma(EntityPickupItemEvent e)
     {
         Player p = (Player) e.getEntity();
         try
         {
-
-            if (!p.isSneaking()) {
+            if (!p.isSneaking())
+            {
                 e.setCancelled(true);
             }
         }
@@ -1862,6 +1820,9 @@ public class EventsClass implements Listener {
 
     }
 
+    /*
+    Kick Fonksiyonu
+     */
     public void OyuncuKickle(Player p, String mesaj)
     {
         Bukkit.getScheduler().runTask(JavaPlugin.getPlugin(BaturPlugin.class), new Runnable() {
@@ -1872,108 +1833,102 @@ public class EventsClass implements Listener {
         });
     }
 
+    /*
+    Chatten konuşma
+     */
     @EventHandler
     public void playerChat(AsyncPlayerChatEvent e)
     {
-        try {
-
-            if (getKontrol(e.getPlayer().getName()).equals("hayir")) // ï¿½ifre girmesi lazï¿½m
+        try
+        {
+            if (getKontrol(e.getPlayer().getName()).equals("hayir"))
             {
-
                 String OrjinalSifre = getSifre(e.getPlayer().getName());
                 String SifreMesaji = e.getMessage();
 
-                if (OrjinalSifre.equals(SifreMesaji)) {
-
-                    e.getPlayer().sendMessage(
-                            ChatColor.GOLD + "[Flowing Tears]: " + ChatColor.GREEN + "Başarıyla giriş yaptınız.");
+                if (OrjinalSifre.equals(SifreMesaji))
+                {
+                    e.getPlayer().sendMessage(ChatColor.GOLD + "[Flowing Tears]: " + ChatColor.GREEN + "Başarıyla giriş yaptınız.");
                     setKontrol(e.getPlayer().getName(), "evet");
                     e.getPlayer().removePotionEffect(PotionEffectType.BLINDNESS);
                     e.getPlayer().removePotionEffect(PotionEffectType.INVISIBILITY);
-
-                    /*
-                     * for (PotionEffect effect : e.getPlayer().getActivePotionEffects()) {
-                     * e.getPlayer().removePotionEffect(effect.getType()); }
-                     */
-
                 }
                 else
                 {
-
                     setKontrol(e.getPlayer().getName(), "hayir");
-                    OyuncuKickle(e.getPlayer(),
-                            ChatColor.GOLD + "[Flowing Tears]: " + ChatColor.RED + "Şifrenizi hatalı girdiniz.");
-                    // e.getPlayer().kickPlayer(ChatColor.GOLD +"[Flowing Tears]:
-                    // "+ChatColor.RED+"ï¿½ifrenizi hatalï¿½ girdiniz." );
-
+                    OyuncuKickle(e.getPlayer(),ChatColor.GOLD + "[Flowing Tears]: " + ChatColor.RED + "Şifrenizi hatalı girdiniz.");
                 }
+
                 e.setCancelled(true);
-            } else if (getKontrol(e.getPlayer().getName()).equals("evet")) // ï¿½ifre girdiyse chatten konusabilir.
+            }
+            else if (getKontrol(e.getPlayer().getName()).equals("evet"))
             {
-
-                if (getMaskeDurum(e.getPlayer().getName()) == 1) {
-
+                if (getMaskeDurum(e.getPlayer().getName()) == 1)
+                {
                     String rawmessage = e.getMessage();
-
                     String message = ChatColor.YELLOW + "Maskeli Kişi: " + ChatColor.WHITE + rawmessage;
                     String ownmessage = ChatColor.GOLD + "Maskeli Kişi: " + ChatColor.WHITE + rawmessage;
 
                     int blockDistance = 10;
                     Location playerLocation = e.getPlayer().getLocation();
 
-                    for (Player pl : e.getRecipients()) {
-                        if (pl.getLocation().distance(playerLocation) <= blockDistance) {
-
-                            if (pl == e.getPlayer()) {
-
+                    for (Player pl : e.getRecipients())
+                    {
+                        if (pl.getLocation().distance(playerLocation) <= blockDistance)
+                        {
+                            if (pl == e.getPlayer())
+                            {
                                 pl.sendMessage(ownmessage);
-                            } else {
+                            }
+                            else
+                            {
                                 pl.sendMessage(message);
                             }
-
                         }
-
                     }
-
                     e.getRecipients().clear();
                 }
-                if (KomutListesi.MaskeAd != e.getPlayer().getDisplayName()) {
-
+                if (KomutListesi.MaskeAd != e.getPlayer().getDisplayName())
+                {
                     String karakterad = getKarakterAd(e.getPlayer().getName());
                     String rawmessage = e.getMessage();
                     String rawmessage2 = rawmessage.substring(0, 1).toUpperCase() + rawmessage.substring(1);
 
                     String message = ChatColor.GOLD+"("+e.getPlayer().getName()+") "+ChatColor.YELLOW + karakterad + ": " + ChatColor.WHITE + rawmessage2;
-
                     String ownmessage = ChatColor.YELLOW+"("+e.getPlayer().getName()+") "+ChatColor.GOLD + karakterad + ": " + ChatColor.WHITE + rawmessage2;
 
                     int blockDistance = 10;
                     Location playerLocation = e.getPlayer().getLocation();
 
-                    for (Player pl : e.getRecipients()) {
-                        if (pl.getLocation().distance(playerLocation) <= blockDistance && pl.getWorld() == e.getPlayer().getWorld()) {
-
-                            if (pl == e.getPlayer()) {
+                    for (Player pl : e.getRecipients())
+                    {
+                        if (pl.getLocation().distance(playerLocation) <= blockDistance && pl.getWorld() == e.getPlayer().getWorld())
+                        {
+                            if (pl == e.getPlayer())
+                            {
                                 pl.sendMessage(ownmessage);
-                            } else {
+                            }
+                            else
+                            {
                                 pl.sendMessage(message);
                             }
-
                         }
-
                     }
 
                     e.getRecipients().clear();
                 }
 
-            } else {
+            }
+            else
+            {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED  + "[Hata]: Oyuncu getKontrol metodunda evet veya hayır harici bir cevap geldi ve else bloğu çalıştı. Konum: playerChat");
-                OyuncuKickle(e.getPlayer(), ChatColor.RED
-                        + "[HATA!]: Chat sisteminde teknik bir arıza oluştu. Hata Kodu #13. Lütfen Batur123 isimli yöneticiye bildirim yapınız. ");
+                OyuncuKickle(e.getPlayer(), ChatColor.RED+ "[HATA]: #002");
                 e.setCancelled(true);
             }
 
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Hata](playerChat): "+e.getPlayer().getName());
         }
 
@@ -1982,9 +1937,7 @@ public class EventsClass implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e)
     {
-
         e.setQuitMessage("");
-
         Connection connect = null;
         PreparedStatement pre = null;
 
@@ -2018,46 +1971,44 @@ public class EventsClass implements Listener {
                     ChatColor.GREEN + "[Bilgi]: " + ChatColor.RED + e.getPlayer().getName() + ChatColor.GREEN
                             + " isimli oyuncu sunucudan çıkış yaptı. Veritabanı güncelleme işlemi yapıldı.");
 
-        } catch (Exception d) {
+        }
+        catch (Exception d)
+        {
 
             d.printStackTrace();
         }
 
-        try {
-            if (connect != null) {
+        try
+        {
+            if (connect != null)
+            {
                 pre.close();
                 connect.close();
             }
-        } catch (SQLException s) {
+        }
+        catch (SQLException s)
+        {
 
             s.printStackTrace();
         }
-
     }
 
     @EventHandler
     public void onCommandPreprocess(PlayerCommandPreprocessEvent e)
     {
         Player p = e.getPlayer();
-
         try
         {
-
-
-            if (getKontrol(p.getPlayer().getName()).equals("hayir"))
+            if (getKontrol(Objects.requireNonNull(p.getPlayer()).getName()).equals("hayir"))
             {
                 e.setCancelled(true);
-                OyuncuKickle(e.getPlayer(), ChatColor.RED
-                        + "Şifrenizi girmeden komut yazamazsınız. Şifrenizi sohbet ekranına direk yazarak giriş yapabilirsiniz.");
-
+                OyuncuKickle(e.getPlayer(), ChatColor.RED + "Şifrenizi girmeden komut yazamazsınız. Şifrenizi sohbet ekranına direk yazarak giriş yapabilirsiniz.");
             }
         }
         catch(Exception ex)
         {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Hata](onCommandPreprocess): "+p.getPlayer().getName());
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Hata](onCommandPreprocess): "+ Objects.requireNonNull(p.getPlayer()).getName());
         }
-
-
     }
 
     @EventHandler
@@ -2066,13 +2017,13 @@ public class EventsClass implements Listener {
         Player p = e.getPlayer();
         try
         {
-            if (getKontrol(p.getPlayer().getName()).equals("hayir")) {
+            if (getKontrol(Objects.requireNonNull(p.getPlayer()).getName()).equals("hayir")) {
                 e.setCancelled(true);
             }
         }
         catch(Exception ex)
         {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Hata](playerDropItem): "+p.getPlayer().getName());
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Hata](playerDropItem): "+ Objects.requireNonNull(p.getPlayer()).getName());
         }
 
 
@@ -2080,44 +2031,38 @@ public class EventsClass implements Listener {
     }
 
     @EventHandler
-    public void OpenInventory(InventoryClickEvent e) {
+    public void OpenInventory(InventoryClickEvent e)
+    {
         Player p = (Player) e.getWhoClicked();
         try
         {
-
-
-            if (getKontrol(p.getPlayer().getName()).equals("hayir")) {
+            if (getKontrol(Objects.requireNonNull(p.getPlayer()).getName()).equals("hayir"))
+            {
                 e.setCancelled(true);
             }
         }
         catch(Exception ex)
         {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Hata](OpenInventory): "+p.getPlayer().getName());
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Hata](OpenInventory): "+ Objects.requireNonNull(p.getPlayer()).getName());
         }
 
     }
 
     @EventHandler
-    public void PlayerInteractEvent(PlayerInteractEvent e) {
-
+    public void PlayerInteractEvent(PlayerInteractEvent e)
+    {
         try
         {
             Player p = e.getPlayer();
-
-            if (getKontrol(p.getPlayer().getName()).equals("hayir"))
+            if (getKontrol(Objects.requireNonNull(p.getPlayer()).getName()).equals("hayir"))
             {
                 e.setCancelled(true);
-            }
-            else
-            {
-
             }
         }
         catch(Exception ex)
         {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Hata](PlayerInteract) "+e.getPlayer().getName());
         }
-
     }
 
     @SuppressWarnings("deprecation")
@@ -2147,8 +2092,8 @@ public class EventsClass implements Listener {
                     //                                    * 1.5));
                     int bonusday = EventsClass.BonusDay(EventsClass.GetIrk(e.getPlayer().getName()));
                     int bonuscev = EventsClass.BonusCeviklik(EventsClass.GetIrk(e.getPlayer().getName()));
-                    p.setMaxHealth(25 + ((Integer.valueOf(getzarDayaniklilik(p.getPlayer().getName())) + bonusday - 10) / 2) * 1.5);
-                    int tempac = ((Integer.valueOf(getzarAtiklik(p.getPlayer().getName())) + bonuscev - 10) / 2);
+                    p.setMaxHealth(25 + ((Integer.parseInt(getzarDayaniklilik(p.getPlayer().getName())) + bonusday - 10) / 2) * 1.5);
+                    int tempac = ((Integer.parseInt(getzarAtiklik(p.getPlayer().getName())) + bonuscev - 10) / 2);
                     tempac = tempac + 10;
                     EventsClass.setAC(e.getPlayer().getName(),tempac);
 
@@ -2177,7 +2122,7 @@ public class EventsClass implements Listener {
             ItemStack dimetrium = new ItemStack(Material.IRON_NUGGET, 25);
             ItemMeta meta = dimetrium.getItemMeta();
             Objects.requireNonNull(meta).setDisplayName(ChatColor.GOLD + "Oren");
-            ArrayList<String> lore = new ArrayList<String>();
+            ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.LIGHT_PURPLE + "Madeni Para");
             meta.setLore(lore);
             dimetrium.setItemMeta(meta);
@@ -2185,7 +2130,7 @@ public class EventsClass implements Listener {
             ItemStack dimetrium2 = new ItemStack(Material.BREAD, 5);
             ItemMeta meta2 = dimetrium2.getItemMeta();
             Objects.requireNonNull(meta2).setDisplayName(ChatColor.GOLD + "Ekmek");
-            ArrayList<String> lore2 = new ArrayList<String>();
+            ArrayList<String> lore2 = new ArrayList<>();
             lore2.add(ChatColor.LIGHT_PURPLE + "Sıcacık ekmek...");
             meta2.setLore(lore2);
             dimetrium2.setItemMeta(meta2);
@@ -2252,62 +2197,53 @@ public class EventsClass implements Listener {
                     CK_Durum = rs.getString("CK_Durum");
                     MeslekSV = rs.getInt("MeslekSV");
 
-                    if (CK_Durum.equals("1")) {
+                    if (CK_Durum.equals("1"))
+                    {
                         OyuncuKickle(player, ChatColor.GOLD + "[Sunucu]:" + ChatColor.GREEN
                                 + " Karakteriniz ölmüş. Lütfen forumdan karakterinizi ayarlayınız..");
                         // player.kickPlayer(ChatColor.GOLD+"[Sunucu]:"+ChatColor.GREEN+" CK olmuï¿½sunuz.
                         // Lï¿½tfen forumdan karakterinizi ayarlayï¿½nï¿½z.");
                         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "[Bilgi]: " + ChatColor.GREEN
                                 + player.getName() + " isimli oyuncu CK olduğu için sunucuya giremedi. ");
-                    } else {
-                        if (BasvuruDurum == 1) {
+                    }
+                    else
+                    {
+                        if (BasvuruDurum == 1)
+                        {
                             player.setPlayerListName(KarakterAdi + "(" + player.getName() + ")");
-                            try {
-                                Object enumTitle = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0]
-                                        .getField("TITLE").get(null);
-                                Object chat = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0]
-                                        .getMethod("a", String.class)
-                                        .invoke(null, "{\"text\":\"Flowing Tears'a hoş geldin\"}");
-
-                                Constructor<?> titleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(
-                                        getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],
-                                        getNMSClass("IChatBaseComponent"), int.class, int.class, int.class);
-                                Object packet = titleConstructor.newInstance(enumTitle, chat, 30, 50, 30); // eskisi 20
-                                // 40 20
-
+                            try
+                            {
+                                Object enumTitle = getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0].getField("TITLE").get(null);
+                                Object chat = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0].getMethod("a", String.class).invoke(null, "{\"text\":\"Flowing Tears'a hoş geldin\"}");
+                                Constructor<?> titleConstructor = getNMSClass("PacketPlayOutTitle").getConstructor(getNMSClass("PacketPlayOutTitle").getDeclaredClasses()[0],getNMSClass("IChatBaseComponent"), int.class, int.class, int.class);
+                                Object packet = titleConstructor.newInstance(enumTitle, chat, 30, 50, 30);
                                 sendPacket(player.getPlayer(), packet);
                             }
-
-                            catch (Exception e1) {
+                            catch (Exception e1)
+                            {
                                 e1.printStackTrace();
                             }
-                            // sendCenteredMessage(player.getPlayer(),
-                            // player.sendMessage(ChatColor.GOLD+"[Evernight-RP]: " +ChatColor.BLUE +
-                            // "Sunucuya hoï¿½geldin "+ChatColor.GREEN+KarakterAdi+"("+OyunAdi+")");
-                            player.sendMessage(ChatColor.YELLOW + "[Şifre Kontrolü]: " + ChatColor.YELLOW
-                                    + "Lütfen şifrenizi giriniz:");
+                            finally
+                            {
+                                OyuncuKickle(player.getPlayer(), ChatColor.RED+ "[HATA]: #002");
 
-                        } else {
-                            OyuncuKickle(player, ChatColor.GOLD + "[Sunucu]:" + ChatColor.RED
-                                    + "Lütfen karakter başvurunuzu yapınız. Karakteriniz bulunamadı.");
-                            // player.kickPlayer(ChatColor.GOLD+"[Sunucu]:"+ChatColor.RED+"Lï¿½tfen karakter
-                            // baï¿½vurunuzu yapï¿½nï¿½z. Karakteriniz bulunamadï¿½.");
-                            Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE
-                                    + "[Bilgi]: Oyuncunun veritabanında kaydı bulundu fakat başvurusu kabul edilmemiş. ("
-                                    + ChatColor.GREEN + " Oyuncunun Adı: " + Objects.requireNonNull(player.getPlayer()).getName() + ")");
+                            }
 
+                            player.sendMessage(ChatColor.YELLOW + "[Şifre Kontrolü]: " + ChatColor.YELLOW + "Lütfen şifrenizi giriniz:");
                         }
-
-                        Bukkit.getConsoleSender().sendMessage(
-                                ChatColor.GREEN + "[Sunucu]: " + OyunAdi + " oyuna bağlantı");
+                        else
+                        {
+                            OyuncuKickle(player, ChatColor.GOLD + "[Sunucu]:" + ChatColor.RED+ "Lütfen karakter başvurunuzu yapınız. Karakteriniz bulunamadı.");
+                            Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE+ "[Bilgi]: Oyuncunun veritabanında kaydı bulundu fakat başvurusu kabul edilmemiş. ("+ ChatColor.GREEN + " Oyuncunun Adı: " + Objects.requireNonNull(player.getPlayer()).getName() + ")");
+                        }
+                        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "[Sunucu]: " + OyunAdi + " oyuna bağlantı");
 
                         File pFileDir = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular");
                         if (!pFileDir.exists())
                         {
                             pFileDir.mkdir();
                         }
-                        File pFile = new File(BaturPlugin.getInstance().getDataFolder(),
-                                "Oyuncular/" + player.getName().toLowerCase() + ".yml");
+                        File pFile = new File(BaturPlugin.getInstance().getDataFolder(),"Oyuncular/" + player.getName().toLowerCase() + ".yml");
                         // if (!pFile.exists())
                         // {
                         try {
@@ -2315,14 +2251,12 @@ public class EventsClass implements Listener {
 
                             FileConfiguration config = YamlConfiguration.loadConfiguration(pFile);
 
-                            // Oyuncu Bilgileri
                             config.set("Oyuncu:", OyunAdi);
                             config.set("Forum_Adi", ForumAdi);
                             config.set("Minecraft_Adi", OyunAdi);
                             config.set("Karakter_Adi", KarakterAdi);
                             config.set("Sifre", Sifre);
                             config.set("Yas", Yas);
-                        //    config.set("Gorunus", Gorunus);
                             config.set("MaskeDurum", 0);
                             // Oyuncu Bilgileri
 
@@ -2358,46 +2292,45 @@ public class EventsClass implements Listener {
 
                             config.save(pFile);
 
-                        } catch (Exception e) {
-
-                            Bukkit.getConsoleSender().sendMessage(ChatColor.RED
-                                    + "[Hata]: Dosya kaydında hata. Satır 1822. Konum -> CreateFile() Fonksiyonu.");
-
                         }
-
+                        catch (Exception e)
+                        {
+                            Bukkit.getConsoleSender().sendMessage(ChatColor.RED+ "[Hata]: Dosya kaydında hata. Satır 1822. Konum -> CreateFile() Fonksiyonu.");
+                        }
                     }
 
-                } while (rs.next());
-
+                }
+                while (rs.next());
                 con.close();
-
             }
-
-        } catch (ClassNotFoundException | SQLException cd) {
-            cd.printStackTrace();
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED
-                    + "[Hata]: ClassNotFoundException ve SQLException hata verdi. Hatanın konumu -> onJoin");
-            OyuncuKickle(player, ChatColor.GOLD + "[Sunucu]:" + ChatColor.RED
-                    + "Girişte hata oluştu. batur123 ile iletişime geçin.");
-            // player.kickPlayer("Hata oluï¿½tu.");
         }
-
+        catch (ClassNotFoundException | SQLException cd)
+        {
+            cd.printStackTrace();
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED+ "[Hata]: ClassNotFoundException ve SQLException hata verdi. Hatanın konumu -> onJoin");
+            OyuncuKickle(player, ChatColor.GOLD + "[Sunucu]:" + ChatColor.RED+ "Girişte hata oluştu. batur123 ile iletişime geçin.");
+        }
     }
 
-    public static String getSifre(String p) {
+    /*
+    Kullanıcı Bilgileri Get,Set Fonksiyonları
+     */
+    public static String getSifre(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getString("Sifre");
-
     }
 
-    public static String getKarakterAd(String p) {
+    public static String getKarakterAd(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getString("Karakter_Adi");
     }
 
-    public static String getKontrol(String p) {
+    public static String getKontrol(String p)
+    {
 
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
@@ -2405,237 +2338,246 @@ public class EventsClass implements Listener {
 
     }
 
-    public void setKontrol(String p, String kontroldurumu) throws IOException {
-
+    public void setKontrol(String p, String kontroldurumu) throws IOException
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("Girdi_Kontrol", kontroldurumu);
-
-            pConfig.save(pFile);
-
+        pConfig.save(pFile);
     }
 
-    public static String getMeslekXP(String p) {
+    public static String getMeslekXP(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getString("MeslekXP");
     }
 
-    public static void setMeslekXP(String p, int kontroldurumu) throws IOException {
-
+    public static void setMeslekXP(String p, int kontroldurumu) throws IOException
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("MeslekXP", kontroldurumu);
-
-            pConfig.save(pFile);
-
+        pConfig.save(pFile);
     }
 
-    public static String getMeslekSeviye(String p) {
+    public static String getMeslekSeviye(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getString("MeslekSV");
     }
 
-    public static void setMeslekSeviye(String p, int kontroldurumu) throws IOException {
-
+    public static void setMeslekSeviye(String p, int kontroldurumu) throws IOException
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("MeslekSV", kontroldurumu);
-
-            pConfig.save(pFile);
-
+        pConfig.save(pFile);
     }
 
-    public static String getYas(String p) {
+    public static String getYas(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getString("Yas");
     }
 
-    public static String getzarGuc(String p) {
+    public static String getzarGuc(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getString("Kuvvet");
     }
 
-    public static String getzarBilgelik(String p) {
+    public static String getzarBilgelik(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getString("Bilgelik");
     }
 
-    public static String getzarAtiklik(String p) {
+    public static String getzarAtiklik(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        return pConfig.getString("ï¿½eviklik");
+        return pConfig.getString("Çeviklik");
     }
 
-    public static String getzarBuyu(String p) {
+    public static String getzarBuyu(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getString("Zeka");
     }
 
-    public static String getzarDayaniklilik(String p) {
+    public static String getzarDayaniklilik(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
-        return pConfig.getString("Dayanï¿½klï¿½lï¿½k");
+        return pConfig.getString("Dayanıjlılık");
     }
 
-    public static String getzarKarizma(String p) {
+    public static String getzarKarizma(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getString("Karizma");
     }
 
-    public static String getGorunus(String p) {
+    public static String getGorunus(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getString("Gorunus");
     }
 
-    public static void setGorunus(String p, String Gorunus) throws IOException {
+    public static void setGorunus(String p, String Gorunus) throws IOException
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("Gorunus", Gorunus);
-            pConfig.save(pFile);
-
+        pConfig.save(pFile);
     }
 
-    public static void setCK(String p, String CKmi) throws IOException {
+    public static void setCK(String p, String CKmi) throws IOException
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("CK_Durum", CKmi);
         pConfig.save(pFile);
-
-
     }
 
-    public void sendPacket(Player player, Object packet) {
-        try {
-            Object handle = player.getClass().getMethod("getHandle").invoke(player);
-            Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
-            playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
-        }
-
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Class<?> getNMSClass(String name) {
-        // org.bukkit.craftbukkit.v1_8_R3...
-        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        try {
-            return Class.forName("net.minecraft.server." + version + "." + name);
-        }
-
-        catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static String getMeslek(String p) {
+    public static String getMeslek(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getString("Meslek");
     }
 
-
-    public static void setMeslek(String p, String YetkiSeviyesi) throws IOException {
-
+    public static void setMeslek(String p, String YetkiSeviyesi) throws IOException
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("Meslek", YetkiSeviyesi);
-
-            pConfig.save(pFile);
-
+        pConfig.save(pFile);
     }
 
-    public static String GetIrk(String p) {
+    public static String GetIrk(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getString("Irk");
     }
 
 
-    public static int BonusKarizma(String p) {
+    public static int BonusKarizma(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Irklar/" + p + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getInt("Karizma");
     }
 
-    public static int BonusKuvvet(String p) {
+    public static int BonusKuvvet(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Irklar/" + p + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getInt("Kuvvet");
     }
 
-    public static int BonusCeviklik(String p) {
+    public static int BonusCeviklik(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Irklar/" + p + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getInt("Ceviklik");
     }
 
-    public static int BonusBilgelik(String p) {
+    public static int BonusBilgelik(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Irklar/" + p + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getInt("Bilgelik");
     }
 
-    public static void setKarakterAd(String p, String kontroldurumu) throws IOException {
-
+    public static void setKarakterAd(String p, String kontroldurumu) throws IOException
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("Karakter_Adi", kontroldurumu);
-            pConfig.save(pFile);
-
+        pConfig.save(pFile);
     }
 
-    public static int BonusZeka(String p) {
+    public static int BonusZeka(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Irklar/" + p + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getInt("Zeka");
     }
 
-    public static int BonusDay(String p) {
+    public static int BonusDay(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Irklar/" + p + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getInt("Dayaniklilik");
     }
 
-    public static int getMaskeDurum(String p) {
+    public static int getMaskeDurum(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getInt("MaskeDurum");
     }
 
-    public static void setMaskeDurum(String p, int MaskeDurum) throws IOException {
-
+    public static void setMaskeDurum(String p, int MaskeDurum) throws IOException
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("MaskeDurum", MaskeDurum);
-
-            pConfig.save(pFile);
-
+        pConfig.save(pFile);
     }
 
-    public static int getAC(String p) {
+    public static int getAC(String p)
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         return pConfig.getInt("AC");
     }
 
-    public static void setAC(String p, int AC) throws IOException {
-
+    public static void setAC(String p, int AC) throws IOException
+    {
         File pFile = new File(BaturPlugin.getInstance().getDataFolder(), "Oyuncular/" + p.toLowerCase() + ".yml");
         FileConfiguration pConfig = YamlConfiguration.loadConfiguration(pFile);
         pConfig.set("AC", AC);
-
-            pConfig.save(pFile);
-
+        pConfig.save(pFile);
     }
 
+    public void sendPacket(Player player, Object packet)
+    {
+        try
+        {
+            Object handle = player.getClass().getMethod("getHandle").invoke(player);
+            Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
+            playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    public Class<?> getNMSClass(String name)
+    {
+        // org.bukkit.craftbukkit.v1_8_R3...
+        //org.bukkit.craftbukkit.v13 deneysel
+        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+        try
+        {
+            return Class.forName("net.minecraft.server." + version + "." + name);
+        }
+        catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
