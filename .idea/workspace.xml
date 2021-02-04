@@ -30,13 +30,6 @@
   <component name="ChangeListManager">
     <list default="true" id="78132177-a15f-4ae9-942e-34fab8bca65e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/BaturPluginIdea/AnaDizinDosyasi/BaturPlugin.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BaturPluginIdea/AnaDizinDosyasi/BaturPlugin.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/BaturPluginIdea/CustomItemler/CustomItems.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BaturPluginIdea/CustomItemler/CustomItems.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/BaturPluginIdea/EventDosyasi/EventsClass$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BaturPluginIdea/EventDosyasi/EventsClass$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/BaturPluginIdea/EventDosyasi/EventsClass.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/BaturPluginIdea/EventDosyasi/EventsClass.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AnaDizinDosyasi/BaturPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AnaDizinDosyasi/BaturPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CustomItemler/CustomItems.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CustomItemler/CustomItems.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/EventDosyasi/EventsClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/EventDosyasi/EventsClass.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Komutlar/KomutListesi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Komutlar/KomutListesi.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -143,6 +136,7 @@
       <workItem from="1596296222861" duration="93000" />
       <workItem from="1596296357585" duration="340000" />
       <workItem from="1611088582322" duration="3257000" />
+      <workItem from="1611146616474" duration="1049000" />
     </task>
     <servers />
   </component>
@@ -159,6 +153,7 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="666" y="261" key="FileChooserDialogImpl" timestamp="1611088689253">
@@ -169,6 +164,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="672" y="97" width="998" height="710" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1611088969894" />
+    <state x="690" y="280" key="extract.method.dialog" timestamp="1611146800777">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="690" y="280" key="extract.method.dialog/0.0.1920.1040@0.0.1920.1040" timestamp="1611146800777" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1611088838599">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

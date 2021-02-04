@@ -67,7 +67,6 @@ public class KomutListesi implements CommandExecutor
                 if (args.length == 0)
                 {
                     sender.sendMessage(tl(ChatColor.GOLD+"[Sunucu]"+ChatColor.RED + "Bir mesaj yazmalısınız. Kullanım ->"+ChatColor.WHITE+"/a <mesaj>"+ChatColor.RED+ " şeklindedir."));
-
                     return true;
                 }
                 else
@@ -82,7 +81,6 @@ public class KomutListesi implements CommandExecutor
                         if(on.isOp())
                         {
                             on.sendMessage(tl(ChatColor.GREEN + "[Admin Chat]"+ChatColor.YELLOW+ sender.getName()+ ChatColor.WHITE +": "+ s.toString()));
-
                         }
                     }
                     Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "[Admin Chat]"+ChatColor.YELLOW+ sender.getName()+ ChatColor.WHITE +": "+ s.toString());
@@ -90,7 +88,7 @@ public class KomutListesi implements CommandExecutor
             }
             else
             {
-                sender.sendMessage(tl(ChatColor.GOLD+"[Sunucu]"+ChatColor.RED+"Admin komutunu kullanmaya yetkiniz yok."));
+                sender.sendMessage(tl(ChatColor.GOLD+"[Sunucu]"+ChatColor.RED+"Bu komutu kullanmaya yetkiniz yok."));
                 return true;
             }
         }
@@ -102,7 +100,6 @@ public class KomutListesi implements CommandExecutor
             if (args.length == 0)
             {
                 sender.sendMessage(tl(ChatColor.GOLD+"[Bilgi]"+ChatColor.RED + "Bir mesaj yazmalısınız. Kullanım ->"+ChatColor.WHITE+"/yardim <mesaj>"+ChatColor.RED+ " şeklindedir."));
-
                 return true;
             }
             else
@@ -797,15 +794,12 @@ public class KomutListesi implements CommandExecutor
                 sender.sendMessage(tl(ChatColor.YELLOW+gorunus));
                 sender.sendMessage(tl(ChatColor.GREEN+"_______________________________"));
                 Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN+"[Sunucu]: "+sender.getName()+" isimli oyuncu /karakter komutunu kullandı.");
-
             }
             catch (Exception cd)
             {
                 System.out.println(cd);
                 cd.printStackTrace();
             }
-
-
         }
 
         if(cmd.getName().equalsIgnoreCase("tur"))
@@ -822,14 +816,11 @@ public class KomutListesi implements CommandExecutor
                 Location playerLocation = p.getPlayer().getLocation();
                 for(Player ab : Bukkit.getOnlinePlayers())
                 {
-
-
                     if(ab.getLocation().distance(playerLocation) <= blockDistance)
                     {
                         ab.sendMessage(ChatColor.GREEN + KarakterAdi+ ChatColor.YELLOW+", tura katılmak için zar attı. "+ChatColor.BLUE+Zar20+ChatColor.YELLOW +" geldi.");
                     }
                 }
-
             }
             catch (Exception cd)
             {
@@ -837,10 +828,7 @@ public class KomutListesi implements CommandExecutor
                 cd.printStackTrace();
 
             }
-
-
         }
-
 
         if(cmd.getName().equalsIgnoreCase("kaydet"))
         {
@@ -870,12 +858,7 @@ public class KomutListesi implements CommandExecutor
             {
                 sender.sendMessage(ChatColor.RED+"Lütfen boş bırakmayınız. /kaydet <mesaj>");
             }
-
-
-
-
         }
-
 
         if(cmd.getName().equalsIgnoreCase("martinkafaat"))
         {
@@ -893,8 +876,6 @@ public class KomutListesi implements CommandExecutor
 
                 for(Player ab : Bukkit.getOnlinePlayers())
                 {
-
-
                     if(ab.getLocation().distance(playerLocation) <= blockDistance)
                     {
                         ab.sendMessage(ChatColor.GREEN + KarakterAdi+ ChatColor.YELLOW+", tam gücüyle anırarak kafa atmaya çalıştı. "+ChatColor.BLUE+Zar20+ChatColor.YELLOW +" geldi.");
@@ -905,8 +886,6 @@ public class KomutListesi implements CommandExecutor
             {
                 sender.sendMessage(ChatColor.RED+"[Hata!]: "+ChatColor.YELLOW+"Martin olmadığın için bu komutu kullanamazsın.");
             }
-
-
         }
 
         if(cmd.getName().equalsIgnoreCase("tamir"))
@@ -949,7 +928,6 @@ public class KomutListesi implements CommandExecutor
                                     stackInHand.getType() == Material.LEATHER_BOOTS ||
                                     ConfigSilahAdi.contains(RenksizSilahAdi)
                     )
-
                     {
                         if(stackInHand.getDurability() <= 0)
                         {
@@ -959,11 +937,8 @@ public class KomutListesi implements CommandExecutor
 
                         for (ItemStack item : p.getInventory().getContents())
                         {
-
                             if (item.getType() == Material.IRON_INGOT)
                             {
-
-
                                 int temp = item.getAmount();
                                 temp = temp - 1;
                                 item.setAmount(temp);
@@ -976,18 +951,13 @@ public class KomutListesi implements CommandExecutor
                                 }
                                 p.updateInventory();
                                 return true;
-
                             }
                             else
                             {
                                 p.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.YELLOW+"Tamir etmek için envanterinizde 1 adet demir olmalıdır.");
-
-
+                                return true;
                             }
                         }
-                        return true;
-
-
 
                     }
                     else
@@ -995,21 +965,18 @@ public class KomutListesi implements CommandExecutor
                         p.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.YELLOW+"Elinizde zırh,silah,yay veya alet olmalıdır. Aksi takdirde tamir edemezsiniz.");
                         return true;
                     }
-
                 }
                 else
                 {
                     p.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.YELLOW+"Demirci olmadığınız için eşyaları tamir edemezsiniz.");
                     return true;
                 }
-
             }
             catch(Exception ex)
             {
                 ex.printStackTrace();
                 p.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.YELLOW+"Elinizde zırh,silah,yay veya alet olmalıdır ve envanterinizde tamir etmek için demir bulunması gerekiyor. Aksi takdirde tamir edemezsiniz.");
             }
-
         }
 
 
@@ -1084,19 +1051,17 @@ public class KomutListesi implements CommandExecutor
                         p.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.YELLOW+"Elinizde bandaj yok!");
                         return true;
                     }
-
                 }
                 else
                 {
                     p.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.YELLOW+"Mesleğiniz şifacı değil.");
+                    return true;
                 }
-
             }
             catch(Exception ex)
             {
                 p.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.YELLOW+"Oyuncuya yakın değilsiniz, oyuncu ismini yanlış girdiniz veya elinizde bandaj yok. Lütfen tekrar deneyiniz.");
             }
-
         }
 
 
@@ -1184,18 +1149,12 @@ public class KomutListesi implements CommandExecutor
 
                 }
             }
-
-
-
             catch (Exception cd)
             {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Hata]:"+" /silah komutu çalıştırılırken sistemde bir hata oluştu. Muhtemel hata tahmini NullPointerException. ");
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED+ "[Hata Bilgi]:"+ChatColor.DARK_GREEN+"/silah komutunu kullanan kişi: "+sender.getName()+" Komutu yazarken elinde tuttugu silah: "+p.getInventory().getItemInMainHand().getType().toString());
                 p.sendMessage(ChatColor.GREEN+"[Uyarı]: "+ChatColor.YELLOW+"Elinizde sistemde olan bir silahı kullandığınızdan veya /silah isim komutunu kullanıyorsanız sunucuda aktif ve size yakın olan bir oyuncu olmasına dikkat ediniz.");
             }
-
-
-
         }
 
         if(cmd.getName().equalsIgnoreCase("hasar") && sender instanceof Player)
@@ -1224,27 +1183,15 @@ public class KomutListesi implements CommandExecutor
 
                         for(Player on : Bukkit.getOnlinePlayers())
                         {
-
                             if(on.getName().equals(target.getName()))
                             {
                                 target.setHealth(target.getHealth() - Double.valueOf(sm.toString()));
                             }
-
                         }
-
-
                         sender.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.RED+target.getName() +ChatColor.YELLOW+"isimli oyuncuya "+ChatColor.RED+ sm.toString() +ChatColor.YELLOW+ "hasar vurdunuz.");
-
-
-                        //  Location targetLocation = target.getPlayer().getLocation();
-
-
-
-
                     }
                     else
                     {
-
                         sender.sendMessage(tl(ChatColor.GOLD+"[Sunucu]"+ChatColor.RED + "Hasar vermek istediğiniz kişiyi girmelisiniz. Kullanım ->"+ChatColor.WHITE+"/hasar <oyuncu> <miktar>"+ChatColor.RED+ " şeklindedir."));
                         return true;
                     }
@@ -1295,16 +1242,21 @@ public class KomutListesi implements CommandExecutor
                     player.sendMessage(ChatColor.BLUE+"[Meslek Bilgi] "+ChatColor.YELLOW+p.getName()+" isimli yönetici mesleğinizi sıfırladı.");
                     EventsClass.setMeslek(player.getName(), "yok");
 
-                    sender.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.RED+s.toString()+ChatColor.YELLOW+" isimli kişinin mesleği sıfırlandı.");
-                    return true;
+                    for(Player ab : Bukkit.getOnlinePlayers())
+                    {
+                        if(ab.isOp())
+                        {
+                            ab.sendMessage(ChatColor.BLUE+"["+p.getName()+"]: "+ChatColor.RED+s.toString()+ChatColor.YELLOW+" isimli kişinin mesleği sıfırlandı.");
+                        }
+                    }
 
+                    return true;
 
                 }
                 else
                 {
                     p.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.YELLOW+"Yetkili olmadığınız için bu komutu kullanamazsınız.");
                 }
-
             }
             catch(Exception ex)
             {
@@ -1345,8 +1297,8 @@ public class KomutListesi implements CommandExecutor
                     EventDosyasi.EventsClass.setCK(player.getName(), "1");
                     player.sendMessage(ChatColor.BLUE+"[Başlangıç Bilgi] "+ChatColor.YELLOW+p.getName()+" isimli yönetici size başlangıç eşyalarınızı verdi.");
                     EventsClass.setMeslek(player.getName(), "yok");
-
                     sender.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.RED+s.toString()+ChatColor.YELLOW+" isimli kişiye başlangıç eşyaları verildi.");
+
                     ItemStack dimetrium = new ItemStack(Material.IRON_NUGGET, 25);
                     ItemMeta meta = dimetrium.getItemMeta();
                     meta.setDisplayName(ChatColor.GOLD + "Oren");
@@ -1366,8 +1318,6 @@ public class KomutListesi implements CommandExecutor
                     player.getInventory().addItem(dimetrium);
                     player.getInventory().addItem(dimetrium2);
                     return true;
-
-
                 }
                 else
                 {
@@ -1380,8 +1330,6 @@ public class KomutListesi implements CommandExecutor
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED+"[Hata]: "+ChatColor.YELLOW+"/baslangic da hata olustu.");
                 p.sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.YELLOW+"Lütfen oyuncu ismini doğru girdiğinize emin olun.");
             }
-
-
         }
 
         if(cmd.getName().equalsIgnoreCase("isimayarla") && sender instanceof Player)
@@ -1421,7 +1369,7 @@ public class KomutListesi implements CommandExecutor
                             if(on.getName().equals(target.getName()))
                             {
                                 EventDosyasi.EventsClass.setKarakterAd(target.getName(), s.toString());
-                                target.setPlayerListName(s.toString());
+                                target.setPlayerListName(s.toString() + "(" + target.getName() + ")");
                             }
 
                         }
@@ -1550,7 +1498,6 @@ public class KomutListesi implements CommandExecutor
                         }
 
                     }
-
                 }
                 else
                 {
@@ -1559,30 +1506,17 @@ public class KomutListesi implements CommandExecutor
                 }
                 Bukkit.getConsoleSender().sendMessage(ChatColor.BLUE+"[Bilgi]: "+ChatColor.GOLD+"Saldıran: "+ChatColor.GREEN+sender.getName()+ChatColor.GOLD+" Saldırığı Kişi: -"+ChatColor.GREEN+player.getName()+ChatColor.GOLD+"- Kullandığı Silah: "+RenkliSilahAdi+ChatColor.GOLD+" Rakip AC: "+tempac+ChatColor.GOLD);
 
-
-
                 for(Player ab : Bukkit.getOnlinePlayers())
                 {
-                    System.out.println("-"+ab.getName()+"-");
-
-
                     if(ab.getLocation().distance(playerLocation) <= blockDistance)
                     {
-
                         ab.sendMessage(saldiriyazisi);
-
                     }
-
-
-
                 }
-
-
             }
             catch(Exception ex)
             {
                 sender.sendMessage(ChatColor.GREEN+"[Uyarı]: "+ChatColor.YELLOW+"Elinizde sistemde olan bir silahı kullandığınızdan veya /silah isim komutunu kullanıyorsanız sunucuda aktif ve size yakın olan bir oyuncu olmasına dikkat ediniz.");
-
             }
 
             return true;
@@ -1637,7 +1571,6 @@ public class KomutListesi implements CommandExecutor
                     {
                         if(ab.getLocation().distance(playerLocation) <= blockDistance)
                         {
-
                             ab.sendMessage(tl(ChatColor.DARK_GREEN + "[Bilgi] " + ChatColor.YELLOW + karakterad+ " "+ChatColor.GREEN +rawmessage));
                         }
                     }
